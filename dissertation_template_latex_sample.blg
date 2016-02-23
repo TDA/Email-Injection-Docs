@@ -1,0 +1,18 @@
+[0] Config.pm:324> INFO - This is Biber 2.1
+[0] Config.pm:327> INFO - Logfile is 'dissertation_template_latex_sample.blg'
+[41] biber-darwin:276> INFO - === Sat Feb 20, 2016, 01:52:23
+[42] Biber.pm:333> INFO - Reading 'dissertation_template_latex_sample.bcf'
+[163] Biber.pm:645> INFO - Found 4 citekeys in bib section 0
+[183] Biber.pm:2977> INFO - Processing section 0
+[199] Biber.pm:3115> INFO - Looking for bibtex format file 'sample_library.bib' for section 0
+[202] bibtex.pm:1021> INFO - Decoding LaTeX character macros into UTF-8
+[203] bibtex.pm:895> INFO - Found BibTeX data source 'sample_library.bib'
+[214] Utils.pm:146> WARN - Overwriting field 'year' with year value from field 'date' for entry 'krishnappa_adult_2012'
+[271] UCollate.pm:66> INFO - Overriding locale 'en-US' defaults 'level = 4' with 'level = 2'
+[271] UCollate.pm:66> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[271] UCollate.pm:66> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[271] Biber.pm:2854> INFO - Sorting list 'cms' of type 'entry' with scheme 'cms' and locale 'en-US'
+[271] Biber.pm:2858> INFO - No sort tailoring available for locale 'en-US'
+[277] bbl.pm:505> INFO - Writing 'dissertation_template_latex_sample.bbl' with encoding 'UTF-8'
+[279] bbl.pm:596> INFO - Output to dissertation_template_latex_sample.bbl
+[279] Biber.pm:106> INFO - WARNINGS: 1
