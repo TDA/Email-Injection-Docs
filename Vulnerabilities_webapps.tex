@@ -1,0 +1,13 @@
+\section{Current Security Issues and Considerations}
+% Discuss one example of vulnerability, followed by discussion of top web vulnerabilities: XSS, Injection (Remote-code and Database)
+Based on our proposed definition of a web application's structure~\ref{fig:webapparch}, if a layer is compromised, the upper layers are not trustworthy.
+For instance, if the server's operating system is compromised, then the data storage, web server, and server-side logic are also compromised due to the interconnected nature of web applications.
+In addition to this, if the communication channel is also compromised - i.e. Man in the Middle attack; the client side presentation layer also gets affected, as attackers are able to manipulate the information being seen by users.
+In order to attack a layer in Figure~\ref{fig:webapparch}, adversaries often utilize interfaces exposed to the upper layers.
+For instance, in a heap spraying attack executed on the client browser layer~\cite{ratanaworabhan2009nozzle},
+an attacker allocates malicious objects using JavaScript in the presentation layer in order to
+coerce the browser into spraying objects in the heap, increasing the success rate of an exploit where a vulnerability is exploited by jumping to the location within the heap.
+In this example, the attacker leverages a vulnerability located in the presentation layer - lack of input validation; to exploit a vulnerability in the browser layer that leads to arbitrary code execution in the browser's address space.
+The arbitrary code that was injected can in turn exploit a vulnerability found on the client operating system in order to escalate a malicious user's privilege and further infect the client machine.
+Furthermore, vulnerabilities are not isolated within each system. For example, malicious JavaScript code could be delivered by an attacker by exploiting a vulnerability in the server-side logic layer, using a reflected or stored cross-site scripting (XSS) vulnerability.
+%May discuss more web application vulnerabilities. XSS, XSRF, ...

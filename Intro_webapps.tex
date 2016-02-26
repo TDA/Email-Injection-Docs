@@ -1,0 +1,54 @@
+\section{Web Applications: Individual and Commercial Front Doors }
+\paragraph{Importance of Security Area}
+Web applications continue to remain as the most popular method for businesses to conduct services over the Internet. As the number of web applications that are accessible increase, so too does the amount of sensitive business and user data that is managed and processed by web applications.
+Because of their continuously increasing popularity and their inherent nature, vulnerabilities that are present in these web applications put both businesses and end-users' security and privacy at risk.
+
+% Rewrite to include more than one example?
+This is not an abstract risk, as the JPMorgan Chase breach in 2014
+affected 76 million US households~\cite{jpmorgan-chase:nyt}. Bloomberg
+reported that the hackers ``exploited an overlooked flaw in one of the
+bank's websites''~\cite{jpmorgan-chase:bloomberg}. Therefore, web applications serve as the ``front door'' for
+many companies and ensuring their security is of paramount
+importance. 
+
+%Rise in Web attack toolkits in 2014 (Symatec report) - perform scans to look for vulnerable plug-ins to launch most effective attacks. Attackers are also able to control how and when attacks are executed.
+\paragraph{Current approaches to address security}
+Current techniques and tools focus primarily on prevention and discovery of these vulnerabilities. For instance, many techniques and tools using static analysis (white-box) or dynamic analysis (black-box) approaches have been proposed and developed to discover the vulnerabilities of web applications~\cite{balzarotti2008saner,felmetsger2010toward,jovanovic2010static,doupe12:enemy-of-the-state,doupe13:dedacota},
+so that the vulnerabilities can be removed before attackers discover and exploit them. 
+However, the efforts of discovering and fixing vulnerabilities are not enough to protect web applications for many reasons:
+\begin{enumerate}
+	\item The increasing complexity of modern web applications brings inevitable risks that cannot be fully mitigated in the process of web application development and deployment
+	\item Attackers are able to take their time in understanding the target web application's functionality and underlying technology stack before executing an attack.
+\end{enumerate}
+
+\paragraph{Proposed approach}
+We believe that a defense-in-depth approach is best in securing web applications. Therefore, to complement the aforementioned vulnerability analysis techniques, we propose to use the ideas of Moving Target Defense to create a novel and proactive approach that adds an additional layer of defense to web applications.
+At a high level, a Moving Target Defense dynamically configures and shifts systems over time to increase the uncertainty and complexity for attackers to perform probing and attacking~\cite{cui2011symbiotes,zhuang2014}.
+While a system's availability is preserved to legitimate users,
+the system components are changed in unpredictable ways to the attackers.
+Therefore, the attacker's window of attack opportunities decrease and the costs of attack increase.
+Even if an attacker succeeds in finding a vulnerability at one point,
+the vulnerability could be unavailable as the result of shifting the underlying system,
+which makes the environment more resilient against attacks.
+
+To best apply the MTD ideas to protect web applications,
+there are two high-level decisions:
+\begin{itemize}
+	\item Deciding what web application component to move
+	\item Choosing the optimal frequency of randomization of the chosen components
+\end{itemize}
+To assist in answering these questions, we first dissect the architecture of a modern web application - both client and server as well as their running environments, in order to explore the possible application of MTD at different layers. 
+We hope our analysis provides insights into the trade-offs among the different places to apply MTD to web applications.
+
+We also discuss our first steps in applying MTD techniques to protect web applications.
+The first technique changes the server-side language used in a web application by automatically translating server-side web application code to another language in order to prevent Code Injection exploits.
+The second technique shifts the database used in a web application by transforming the backend SQL database into different implementations that speak different dialects in order to prevent SQL Injection exploits.
+
+\begin{comment}
+\noindent{}The main contributions of this paper are the following:
+\begin{itemize}
+\item We discuss the possibilities of applying moving target defense to different layers of web applications.
+\item We propose two novel approaches to changing the implementation language of a web application
+and the database implementation while keeping the functionality.
+\end{itemize}
+\end{comment}

@@ -1,0 +1,19 @@
+\section{Current State of Moving Target Defense to Web Applications}
+\paragraph{Current state of applying MTD to Web Applications}
+%Since all web applications are distributed with many actors involved,
+Current techniques and approaches to web vulnerabilities focus on detection, patching, and prevention. 
+
+(Mention static and dynamic analysis?)
+
+Also something about secure programming practices - proper sanitation of user input, using prepared statements for database queries, more examples?
+ 
+In addition to these traditional approaches, recent attempts have been made to apply the moving target defense concept to web applications.
+Huang \textit{et al.} proposed to create and rotate between a set of virtual servers, each of which is configured with a unique software mix,
+to move the attack surface for web surfaces~\cite{huang2011}. 
+Their work also explored the various opportunities of diversification in the web application software stack, providing a higher-level overview of the attack surface.
+Our work builds on this by further analyzing the components in each layer and defining what randomization in each layer entails; in addition to attempting to automate diversification  of the components located in the logic and storage layer.
+Aiming to prevent SQL injection attacks, Boyd \textit{et al.} proposed to create instances of unpredictable database query languages and to translate them to standard SQL using an intermediary proxy~\cite{boyd2004}. 
+Although their approach also aims to prevent SQL injections, our proposed diversification approach aims to prevent a broader range of vulnerabilities---specifically unpatched vulnerabilities, zero day exploits, and mass-attacks targeting specific database implementations.
+Portner \textit{et al.} proposed to defend against cross-site scripting (XSS) attacks by mutating the symbols in JavaScript in such a way that maliciously injected JavaScript code fails to execute due to incorrect version compatibility, and identifying such malicious programs~\cite{portner2014}.
+Their work aims to prevent a different class of vulnerabilities, specifically located at the presentation layer on the client side. On the other hand, our proposed approach is aimed at applying MTD ideas on the server side of the web application architecture - specifically the logic and storage layers.
+Despite these differences, we envision such techniques, located in each layer, to cooperate together to provide a defense-in-depth approach in defending web applications.

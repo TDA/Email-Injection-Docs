@@ -1,0 +1,73 @@
+\section{Leveraging web application layers for MTD}
+\paragraph{Moving Target Defense in each Layer of Web Application}
+The core idea of moving target defense (MTD) can be applied to each layer of web applications and their running components. The key consideration to ensure however, is that the ``movement,'' done successfully prevents the intended vulnerability or exploit, while preserving the application functionality. 
+%Worth noting that as there is no guarantee that unintended vulnerabilities will not be introduced, but we have stated that the malicious users will be unaware of these new vulnerabilities and will need to go through the effort of reconaissance once again in order to discover and exploit these new vulnerabilities. 
+In this section, we discuss the different components that are available for moving at each layer of the web application. Specifically, we focus on the layers that play a major role in web applications and those that are often targeted: the logic layer, storage layer, and presentation layer, and browsers.
+%We present examples to show what kind of vulnerabilities can be switched out by moving components.
+%We discuss the challenges in realizing moving targets at each layer.
+%In general, moving a component can temporarily
+For a discussion on layers that are common to other applications, 
+which include the operating system layer and the infrastructure layer,
+we refer the interested reader to research in these areas~\cite{team2003pax,barrantes2003randomized,larsen2014sok,wartell2012binary,williams2009security,salamat2011runtime,vikram2013,dunlop2011,carvalho2014,li2014}.
+
+%We define some requirements a MTD mechanism for web applications should meet.
+%Moving should be transparent to end-users, correct for business, automated with only one time configuration,
+
+\subsection{Logic Layer}
+At the logic layer of web applications, there exist at least two ways of applying MTD by changing it's implementation.
+The first approach is based on the idea of software diversity~\cite{larsen2014sok}, changing and modifying the code at statement, function, or object levels. This technique is widely used in lower level languages, and is typically used to prevent memory corruption vulnerabilities - specifically return-oriented programming (ROP) exploits, that take advantage of previously known code-layouts by hijacking the program control flow and executing malicious code. This automated diversity MTD technique can be done statically or dynamically. Web applications however, are typically written in higher level languages such as Java, Python, and Ruby - offering them some degree of immunity to memory corruption vulnerabilities. As a result, most vulnerabilities found in web applications are a inherent in the code itself - for instance, XSS attacks, where server-side web application code is able to modify or create HTML from user input that is unsanitized and untrusted. In such a case, software diversity will be ineffective as the problem lies within the logic of the web application.
+
+Another possible MTD approach at the logic layer is similar to software diversification, with the concept of extending 'diversification' to a higher level. By switching a web application's implementation from one language to another, one could eliminate some language- or framework-specific vulnerabilities, due to some vulnerability classes being specific to certain programming languages.
+For instance, an application that is developed with \emph{Ruby on Rails 3.0.5} may introduce execution-after-redirect vulnerabilities,
+while its counterpart developed with \emph{Python} and \emph{Django 1.2.5} is impervious to this class of vulnerabilities, primarily due to the different implementations of the underlying framework~\cite{doupe2011fear}.
+As with software diversity, changing the web application's implementation language could be static or dynamic.
+In a static \emph{implementation language} switch, the translation of the original application is done prior to launch and allows the web server to simply launch another instance of the the application that is written in a different implementation language.~\figurename{translationfigure}
+To automate the process, web application developers need only develop the application once in their preferred language followed by feeding their original code to a translator program to translate the code into functionally equivalent code in another web application language.
+The process of translation between languages is difficult due to several reasons. The primary issue being that the original language the code is written in might have some features that the target language does not offer.
+In a dynamic \emph{implementation language} switch, in addition to the translation issues in the static approach, resources must be managed properly when switching - for example, executing the translation while managing ongoing requests and responses, as well as ensuring that the states of the running web application is maintained or tra sformed in order for the program to understand once translation is completed.
+In Section~\ref{sec:source2source} we further discuss our implementation of this automated \emph{implementation language} switch idea.
+
+%program translation: challenge: how to faithfully translate program, system dependent function calls
+%live program migration, state mapping problem, live software update.
+
+%\subsection{Web Server Layer}
+
+\subsection{Storage Layer}
+The primary challenge that the storage layer of web applications face are often database injection attacks wherein, user data retrieved from the logic layer is interpreted as SQL statements by the application's database management systems.
+In order to successfully perform these SQL injection attacks, malicious users need to carefully craft their input to overcome injection prevention techniques by utilizing reversed tokens in the target SQL syntax and modify the logic layer's intended SQL statement. %Show example?
+
+While SQL itself is standard, there exist different SQL database implementations that utilize slightly different SQL syntaxes (also called dialects). By leveraging this information, one can switch the database implementation used in a web application in order to defeat targeted SQL injection exploits aimed at specific SQL dialects.
+For instance, when using a database that uses MySQL's dialect,  both single (\verb"''") and double (\verb|""|) quotations are used for identifying values---on the other-hand, switching a database that contains the same data written in PostgreSQL's dialect results in single quotations being restricted for values and double quotations used when identifying field names, table names, etc.
+
+Similar to the logic layer implementation randomization, static MTD for databases can be realized by exporting the data from one database implementation prior to execution and then importing it into a different database implementation.
+Dynamic MTD for the storage layer is also possible to achieve by translating the database at intervals and swapping the currently running instance with the target instance. However, both databases need to be kept synchronized while allowing for continuous external interaction.
+In Section~\ref{sec:db2db} we discuss our implementation of this idea.
+
+\subsection{Presentation Layer}
+The client side presentation layer primarily contains technologies that are most directly accessible to the user - they provide information to the browser that allows users to view their requested resource. Some examples of technologies found in this layer are: client-side JavaScript code running some of the web application's logic, the HTML DOM containing the web page layout and provides a way for users to interact with the application through forms, radio buttons, and hyper-links, and CSS that manages the web page style and layout. At this layer, the most direct threat to user data is found through XSS attacks wherein malicious scripts are injected into the web application in order to steal information from users. 
+
+Several MTD approaches have been proposed to prevent against such attacks. One technique is to introduce a degree of randomness to the underlying HTML form fields by adding tags to each field in order to obfuscate or hide their real values against web bots looking to automate attacks~\cite{vikram2013}.
+Another approach was proposed to introduce randomness to the JavaScript code by mutating tokens in such a way that malicious JavaScript code injected by attackers will fail to execute as their input does not match the version running on the application. In addition to this random token, multiple versions of the website utilizing varying JavaScript versions are also deployed to further confuse attackers~\cite{portner2014}.
+
+\subsection{Browsers}
+Most modern web browsers have modularized architectures that typically include rendering engines, JavaScript interpreters, and XML parsers~\cite{reis2009browser}.
+By moving and modifying these components, vulnerabilities present within the components of the browser can also be mitigated. By doing so, the browser itself, as well as the underlying system it is running on can be defended. For example, the Cheetah browser~\cite{BrowserCheetah} and the 360 browser~\cite{Browser360} can change their rendering engines between WebKit and Trident. By doing so, remote code executions and memory corruption exploits can be prevented. (Can we cite BlackHat talk)%adam berth paper of security of chromium browser?) 
+
+In addition to defending browsers against exploits, user privacy can also be protected by modifying browser configurations. 
+Each browser instance has its own unique configurations: System fonts, Browser plugins and versions, cookie enabled flags, and user agents just to name a few. Using these information, web applications are able to uniquely fingerprint a browser in order to track users and their web movements~\cite{eckersley2010unique}. 
+By diversifying the configuration components, a browser can be prevented from being fingerprinted, thereby protecting the web user's privacy~\cite{laperdrixmitigating,nikiforakis15,nikiforakis13}.
+
+\section{Language-based and Dialect-based Randomization Approach for Web Applications}
+Overview of the dialect based randomization goes here. Describe the system components being developed, what are the inputs, the functionalities, the outputs, limitations, etc. Also include an overall diagram of the conversion process + system.
+
+\subsection{Attack model and assumptions}
+Attack Source
+Attack Goal
+Attack Method
+Attack Consequences
+
+Targeting specifically:
+Injection attacks (SQL and remote code executions)
+Can be extended to prevent other exploits targeting other layers of the web application. 
+Assumptions:
+Mass attacks (Non-targeted attacks) on specific technologies
