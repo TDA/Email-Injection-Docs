@@ -1,10 +1,18 @@
 \chapter{Introduction}
-	The World Wide Web has single handedly brought about a change in the way we use computers. The ubiquitous nature of the Web has made it possible for the general public to access it anywhere, and on multiple devices like Phones, Laptops, Personal Digital Assistants, and even on TVs and cars. While this rapid pace of development has improved the speed of dissemination of information, it does come at a cost. Attackers 
-	\cite{Injection}
-	This section will have a brief overview about the project. What the problem is, and What we aim to achieve.
+\paragraph{}
+	The World Wide Web has single handedly brought about a change in the way we use computers. The ubiquitous nature of the Web has made it possible for the general public to access it anywhere, and on multiple devices like Phones, Laptops, Personal Digital Assistants, and even on TVs and cars. This has ushered in an era of responsive web applications which depend on user input. While this rapid pace of development has improved the speed of dissemination of information, it does come at a cost. Attackers have an added incentive to break into user E-Mail accounts more than ever. E-Mail accounts are usually connected to almost all other online accounts of a user, and E-Mails continue to serve as the principal mode of official communication on the web for most institutions. Thus, the impact an attacker can have by taking over just a single E-Mail account of an unsuspecting end user is of a large magnitude. 
+	
+	Since attackers are typically users of the system, if user input is to be trusted, then developers need to have proper sanitization routines in place. Many different injection attacks like the ever popular SQL injection or cross-site scripting (XSS) \cite{OWASPT10} are possible due to improper sanitization of user input. 
+	
+	Our research focuses on a lesser known injection attack known as E-Mail Header Injection. E-Mail header Injection can be considered as the E-Mail equivalent of HTTP Header Injection Vulnerability. The vulnerability exists in the reference implementation of the built-in “mail” functionality in popular languages like PHP, Java and Python. With the proper injection string, this vulnerability can be exploited to inject additional headers and/or modify existing headers in an E-Mail message.
+
+	E-Mail Header Injection attacks have the potential to allow an attacker to perform E-Mail spoofing, resulting in vicious Phishing attacks that can lead to identity theft.
+	The objective of our research is to find if this vulnerability is widespread on the World Wide Web, and whether further research is required in this area.
+	
+	In order to do this, we performed an expansive crawl of the web, extracting forms that had E-Mail fields in them, and then injecting them with different payloads. We then audited the received emails to see if any of the injected data was present. This allowed us to classify whether a particular URL was vulnerable to the attack. This entire system works in a black-box manner, without looking at the web application's source code, and only analyzing the emails we receive based on the injected payloads.
 
 \paragraph{Structure of document} % describes the remaining sections and gives a short desc about them
-This document is divided logically into the following sections:
+This thesis document is divided logically into the following sections:
 \begin{itemize}
 	\item Chapter 2 discusses the background of E-Mail Header Injection, a brief history of the vulnerability, and proceeds onto enumerate the languages and platforms affected by this vulnerability.% describe each section 
 	
@@ -22,7 +30,7 @@ This document is divided logically into the following sections:
 \end{itemize} 
 
 \paragraph{} % summary paragraph
-In summary, we make the following contributions:
+We hope that our research sheds some light on this relatively less popular vulnerability, and find out its prevalence on the World Wide Web. In summary, we make the following contributions:
 \begin{itemize}
 	
 	\item{A black-box approach to detecting the presence of E-Mail header injection vulnerability in a web application.}
