@@ -5,21 +5,6 @@ E-Mail Header Injection seems to have been first documented over a decade ago, i
 Since this vulnerability was initially found in the \emph{mail()} function of PHP, E-Mail Header Injection can be traced to as early as early 2000's, present in the \emph{mail()} implementation of PHP 4.0. It is to be noted that after 13 further iterations of the language (the current version is 7.1), the \emph{mail()} function is yet to be fixed.
 
 The vulnerability was also described very briefly (less than a page) by Stuttard and Pinto in their widely acclaimed book, ``\emph{The Web Application Hacker's Handbook: Discovering and Exploiting Security Flaw}'' (\cite{stuttard2011web}). 
-A timeline of the vulnerability is presented in Table \ref{tab:history}.
+A concise timeline of the vulnerability is presented in Table \ref{tab:history}.
 
-\begin{table}[!htbp]
-	\centering
-	\begin{tabular}{|p{2cm}|p{10cm}|}
-		\hline
-		Year & Notes\\
-		\hline
-		{Early 2000's} & {PHP 4.0 gets released, along with support for the mail() function, which has no protection against E-Mail Header Injection.}\\
-		\hline
-		{Jul 2004} & {Next Major version of PHP - Version 5.0 releases}\\
-		\hline
-		{Dec 2004} & {First known article about the vulnerability surfaces on phpsecure.info}\\
-		\hline		
-	\end{tabular}
-	\caption{A brief history of E-Mail Header Injection}
-	\label{tab:history}
-\end{table}
+\input{Background/history_table}
