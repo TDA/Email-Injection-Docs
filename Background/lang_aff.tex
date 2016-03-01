@@ -2,8 +2,16 @@
 
 This section describes the popular languages which exhibit this type of vulnerability. 
 \begin{itemize}
-	\item PHP - Describe which functions/params are affected
+	\item PHP was one of the first languages found to have this vulnerability in its implementation of the \emph{mail()} function. The early finding of this vulnerability can be attributed in part to the success and popularity of the language for creating web pages. According to \cite{W3techs}, PHP is used by 81.7\% of all the websites in existence, thereby creating the possibility of this vulnerability to be widespread. 
+	
+	PHP's low barrier to entry, and lack of developer education about the existence of this vulnerability have contributed to the vulnerability continuing to exist in the language.
+	It is to be noted that after 13 further iterations of the language since the 4.0 release (the current version is 7.1), the \emph{mail()} function is yet to be fixed.
+	
+	\item Python - A bug was filed about the vulnerability in Python's implementation of the \emph{email} library and its header parsing functions in 2009, which was followed up with a patch in early 2011
 	\item Java - Describe which functions/params are affected
-	\item Python - Describe which functions/params are affected
+	\item Ruby - Has this as %well.Net::SMTP.start('localhost', 1025) do |smtp|
+	%smtp.send_message message, 'me@fromdomain.com',
+	%'test@todomain.com'
+
 \end{itemize}
  
