@@ -1,14 +1,15 @@
 \section{Potential Impact}
 
-This section describes the impact of the vulnerability, and how far-reaching the effects could be. 
+The impact of the vulnerability can be pretty far-reaching.
 Table \ref{tab:usage} shows the current Server side language usage statistics on the Web, compiled from \cite{W3techs}. 
-PHP, Java, Python and Ruby (combined) account for almost 85\% of the websites in existence. This vulnerability can potentially lead to any of the following:
+PHP, Java, Python and Ruby (combined) account for over 85\%\footnote{Note: a website may use more than one server-side programming language} of the websites in existence. The vulnerability can be exploited to potentially do any of the following:
 \begin{itemize}
 	\item Phishing and Spoofing Attacks
 	\item Denial of service by attacking the underlying mail server
 	\item Spam Networks
-
 \end{itemize}
+
+It is clear that if proper validation for E-Mail is not performed by these sites, this can quickly escalate to a huge issue.
  
 
 \begin{table}[!htbp]
@@ -36,3 +37,6 @@ PHP, Java, Python and Ruby (combined) account for almost 85\% of the websites in
 	\caption{Language Usage Statistics compiled from W3Techs}
 	\label{tab:usage}
 \end{table}
+
+\paragraph{}
+The next chapter looks at the System Design, and goes in depth into the architecture of our system.
