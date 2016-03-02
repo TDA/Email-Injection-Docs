@@ -8,11 +8,31 @@
 \usepackage{dcolumn,array}
 \usepackage{tocloft}
 \usepackage{asudis}
+%% These are for including code
 \usepackage{listings}
 \usepackage{comment}
 \usepackage{color}
 \usepackage[justification=centering]{caption}
 \usepackage[pageanchor=true,plainpages=false,pdfpagelabels,bookmarks,bookmarksnumbered]{hyperref}
+
+\definecolor{mygray}{rgb}{0.6,0.6,0.6}
+\definecolor{lightgray}{rgb}{0.92,0.92,0.92}
+\definecolor{darkgreen}{rgb}{0,0.7,0}
+% default options for listings
+\lstset{
+	backgroundcolor=\color{lightgray},
+	basicstyle=\footnotesize,
+	breaklines=true, 
+	captionpos=b,
+	commentstyle=\color{darkgreen}, 
+	frame=single,
+	keywordstyle=\color{blue}, 
+	numbers=left,
+	numbersep=5pt,
+	numberstyle=\tiny\color{mygray},
+	rulecolor=\color{black},
+	showstringspaces=false
+	}
 
 \begin{document}
 %-----------------------front matter

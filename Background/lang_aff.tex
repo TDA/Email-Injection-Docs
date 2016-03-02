@@ -1,17 +1,29 @@
 \section{Languages Affected}
 
-This section describes the popular languages which exhibit this type of vulnerability. 
+This section describes the popular languages which exhibit this type of vulnerability. This section is not intended as a complete reference of vulnerable functions and methods, but rather as a guide that specifies which parts of the language are known to have the vulnerability.
 \begin{itemize}
 	\item PHP was one of the first languages found to have this vulnerability in its implementation of the \emph{mail()} function. The early finding of this vulnerability can be attributed in part to the success and popularity of the language for creating web pages. According to \cite{W3techs}, PHP is used by 81.7\% of all the websites in existence, thereby creating the possibility of this vulnerability to be widespread. 
 	
 	PHP's low barrier to entry, and lack of developer education about the existence of this vulnerability have contributed to the vulnerability continuing to exist in the language.
-	It is to be noted that after 13 further iterations of the language since the 4.0 release (the current version is 7.1), the \emph{mail()} function is yet to be fixed.
+	It is to be noted that after 13 further iterations of the language since the 4.0 release (the current version is 7.1), the \emph{mail()} function is yet to be fixed. However, it is specified in documentation (\cite{PHPDocs}) that the \emph{mail()} function does not protect against this vulnerability.
+	A working code sample of the vulnerability, written in PHP 5.6 (latest well supported version), is shown in  \ref{code:phpemi}
 	
-	\item Python - A bug was filed about the vulnerability in Python's implementation of the \emph{email} library and its header parsing functions in 2009, which was followed up with a patch in early 2011
+	\input{Background/php.tex}
+	\item Python - A bug was filed about the vulnerability in Python's implementation of the \emph{email.header} library and its header parsing functions allowing newlines in early 2009, which was followed up with a partial patch in early 2011. 
+	
+	Unfortunately, the bug fix was only for the \emph{email.header} package, and thus is still prevalent in other frequently used packages like \emph{email.parser}, where both the classic \emph{Parser()} and the `new and improved' \emph{FeedParser()} exhibit the vulnerability even in the latest versions - \emph{2.7.11} and \emph{3.5}. The bug fix was also not backported to older versions of Python. 
+	There is no mention of the vulnerability in the Python Documentation for either Library.
+	A working code sample of the vulnerability, written in Python 2.7.11, is shown in \ref{code:pyemi}
+	\input{Background/py.tex}
+	
+	
 	\item Java - Describe which functions/params are affected
-	\item Ruby - Has this as %well.Net::SMTP.start('localhost', 1025) do |smtp|
-	%smtp.send_message message, 'me@fromdomain.com',
-	%'test@todomain.com'
+	\item Ruby - From our preliminary testing, Ruby's builtin Net::SMTP Library has this vulnerability. This is not documented in the Library's home page.
+	A working code sample of the vulnerability, written in Ruby 2.0.0 (the latest stable version), is shown in \ref{code:rubyemi}
+	
+	\input{Background/ruby.tex}
+	
+
 
 \end{itemize}
  

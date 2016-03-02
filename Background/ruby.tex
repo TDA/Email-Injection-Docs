@@ -1,0 +1,25 @@
+\lstset{language=Ruby,caption={E-Mail Header Injection - Ruby},label={code:rubyemi}}
+\begin{lstlisting}
+require 'sinatra'
+require 'net/smtp'
+
+post '/hello' do
+greeting = params[:greeting]
+email = params[:email]
+
+message = """
+From: Sai <schand31@asu.edu>
+To: #{email}
+Subject: SMTP e-mail test
+
+This is a test e-mail message.
+"""
+# construct a post request with email set to attack_string
+# attack_string => sai@sai.com%0abcc:spc@spc.com
+Net::SMTP.start('localhost', 1025) do |smtp|
+smtp.send_message message, 'schand31@asu.edu',
+'to@todomain.com'
+end
+# E-Mail gets sent to both sai@sai.com AND spc@spc.com
+end
+\end{lstlisting}

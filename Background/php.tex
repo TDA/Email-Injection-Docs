@@ -1,0 +1,11 @@
+\lstset{language=PHP,caption={E-Mail Header Injection - PHP},label={code:phpemi}}
+\begin{lstlisting}
+$from = $_REQUEST['email'];
+$subject = "Hello Sai Pc";
+$message = "We need you to reset your password";
+$to = "schand31@asu.edu";
+
+// attack string => 'sai@sai.com\nBCC:spc@spc.com'
+$retValue = mail($to, $subject, $message, "From: $from");
+// E-Mail gets sent to both sai@sai.com AND spc@spc.com
+\end{lstlisting}
