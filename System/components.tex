@@ -20,7 +20,11 @@ This section expands on the brief overview given in the previous section \ref{sy
 
 \subsection{E-Mail Field Checker}
 	\label{Comp:EMFC}
-	Describe the functionality of the E-Mail Field Checker
+	The E-Mail Field  Checker script is the next stage in the pipeline. It receives the output of the previous stage - Form Data from the queue, and checks for the presence of E-Mail fields in those forms. If any E-Mail fields are found, it stores references to these forms in a separate table. This allows us to separate the forms that are potentially vulnerable from the forms that are not.
+
+	The E-Mail Field Checker particularly searches for the word 'e-mail' or 'email' within the form, instead of an explicit email field (ie) \colorbox{lightgray}{\lstinline{<input type="email">}}. This is by design, taking into account a very common design pattern used by web designers, where they may have a text field with a label called email, instead of an actual E-Mail field, for purposes of backward compatibility with older browsers.
+	Instead of an id/name/type of email. ARIA isn't exactly their goal. ikr.
+	
 
 \subsection{E-Mail Form Retriever}
 	\label{Comp:EMFR}
