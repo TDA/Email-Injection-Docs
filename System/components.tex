@@ -1,16 +1,23 @@
 \section{System Components}
 \label{Comp}
 
-This will discuss in detail about the components of the system, like the following:
+This section expands on the brief overview given in the previous section \ref{sys:arch}, describing in detail the functionality of each of the components:
 
 \subsection{Crawler}
 	\label{Comp:Crawler}
-	Describe the functionality of the Crawler
+	We used an open-source Crawler built at University of California - Santa Barbara. The Crawler provides us with a continuous feed of URLs and the HTML contained in those pages. This feed is tunneled to our Form Parser over a Celery Queue.
 	
 \subsection{Form Parser}
 	\label{Comp:FP}
-	Describe the functionality of the Form Parser
-	
+	The actual pipeline begins at the Form Parser. This module is responsible for parsing the HTML and retrieving data about the forms on the page, including the following:
+	\begin{itemize}
+		\item Form attributes, such as method, action, etc. These dictate where we send the HTTP Request, and what kind of request it is (GET or POST).
+		\item Data about the input fields, such as their attributes, names, and default values. The default values are essential for fields like \colorbox{lightgray}{\lstinline{<input type="hidden">}} as these fields are usually used to check for the submission of forms by bots.
+		\item Presence of the \colorbox{lightgray}{\lstinline{<base>}} element, as this affects the final URL to which the form is to be submitted.
+		\item Headers associated with the page, such as \emph{referrer}. Once again, these were required to avoid the website from ignoring our system as a bot.
+	\end{itemize} 
+	The Form Parser stores all this data in our Databases, so as to allow us to reconstruct the forms later for fuzzing, as needed.
+
 \subsection{E-Mail Field Checker}
 	\label{Comp:EMFC}
 	Describe the functionality of the E-Mail Field Checker
