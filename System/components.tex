@@ -59,12 +59,10 @@ This section expands on the brief overview given in the previous section \ref{sy
 			\item \colorbox{lightgray}{\lstinline{nuser(xxxx)@wackopicko.com\\r\\nbcc:maluser(xxxx)@wackopicko.com\\r\\nx-check:in}} - Same as previous payload, but containing the additional `\textbackslash{}r' for Windows compatibility.
 			 
 		\end{enumerate}
-		The `xxxx' in the above payloads is replaced by the \lstinline{`form_id'}, so as to create a one-to-one mapping of the payloads to the forms. The coverage provided by each Payload is shown in Fig. \ref{tab:payloadcov}.
+		The `xxxx' in the above payloads is replaced by the \lstinline{`form_id'}, so as to create a one-to-one mapping of the payloads to the forms. The coverage provided by each Payload is shown in Fig. \ref{tab:payloadcov}.\\
 
 	\begin{table}[!htbp]
 		\centering
-		\caption{Payload Coverage}
-		\label{tab:payloadcov}
 		\begin{tabular}{|c|c|c|}
 			\hline
 			Payload & Languages covered & Platforms covered\\
@@ -78,6 +76,8 @@ This section expands on the brief overview given in the previous section \ref{sy
 			4 & Python & Windows\\
 			\hline
 		\end{tabular}
+		\caption{Payload Coverage}
+		\label{tab:payloadcov}
 	\end{table}
 	Along with the payload, the Fuzzer also has to inject data into the other fields of the form. This data also has to pass validation constraints on the individual input fields e.g.\ for a name field, numbers might not be allowed. It is essential that the data we inject into the input fields adhere to the constraints. Our Fuzzer does this by making use of a `Data Dictionary' which has predefined `keys' and `values' for common input fields such as name, date, username, password, text, etc. The default values for these are generated on-the-fly for each form, based on generally followed guidelines for such fields. e.g.\ password fields should consist of at least one uppercase letter, one lowercase letter, and a special character.
 	
@@ -110,4 +110,20 @@ This section expands on the brief overview given in the previous section \ref{sy
 		\item The data is used to validate our findings.
 		\item The data collected can be used for other research projects in this area.
 	\end{enumerate}
+	Each table in our database is listed in Table. \ref{tab:dbtf} along with the data it is designed to hold. A schema of the database is shown in Figure. \ref{fig:dbschema}.
+	
+	
+\begin{table}[!htbp]
+	\centering
+	\input{System/tables}		
+	\caption{Database - Tables}
+	\label{tab:dbtf}
+\end{table}
+
+\begin{figure}[!htbp]
+ 	\centering
+ 	\includegraphics[width=15cm, height=11cm]{System/dbschema}
+	\caption{Database Schema}
+	\label{fig:dbschema}
+\end{figure}
 	
