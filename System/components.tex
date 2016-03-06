@@ -97,5 +97,15 @@ This section expands on the brief overview given in the previous section \ref{sy
 		\subparagraph{Detecting injected bcc headers}
 		As discussed in the payloads section (\ref{Comp:Fuzzer:mp}), the payloads were crafted in such a way that the mails received by `maluser' account directly indicate the presence of the injected `bcc' field. Thus, we simply parse the E-Mails and store them in the Database.
 		
-		\subparagraph{Detecting injected x-check headers}	
+		\subparagraph{Detecting injected x-check headers}
+		E-Mails not received by the `maluser' account but by the `nuser' account constitute a special category of E-Mails.
+		These E-Mails could have been generated due to two reasons:
+		\begin{enumerate}
+			\item The websites performed some sanitization routines and stripped out the `bcc' part of the payload, thereby sending E-Mails only to the `nuser' account. These E-Mails then act as proof that the vulnerability was not found on the given website.
+			\item A more conducive scenario for us is when the `bcc' header was ignored for some reason, e.g.\ Python's default behavior when it encounters duplicate headers. In this case, we check whether the E-Mail contains the custom header `x-check'. If it does, then this is a successful attack as well, and we store it in the Database.
+		\end{enumerate}
 \subsection{Database}
+	We collect and store as much data as possible at each stage of the pipelines. This is due to the two following reasons:
+	\begin{enumerate}
+		\item The data is used to validate our 
+	\end{enumerate}

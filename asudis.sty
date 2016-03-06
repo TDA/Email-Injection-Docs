@@ -241,7 +241,7 @@ letterpaper}%,showframe,showcrop}
                         \refstepcounter{chapter}%
                         \typeout{\@chapapp\space\thechapter.}%
                         \addcontentsline{toc}{chapter}%
-                        {\protect\numberline{\thechapter}#1}%
+                        {\protect\numberline{\thechapter}{\texorpdfstring{\MakeUppercase{#1}}{}}}%
                     \else
                         \addcontentsline{toc}{chapter}{#1}%
                     \fi
