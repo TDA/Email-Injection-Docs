@@ -1,7 +1,9 @@
 \lstset{language=Python,caption={E-Mail Header Injection - Python},label={code:pyemi}}
 \begin{lstlisting}
 from email.parser import Parser
-to = input()
+import cgi
+form = cgi.FieldStorage()
+to = form["email"] # input() exhibits the same behavior
 msg = """To: """ + to + """\n
 From: <user@example.com>\n
 Subject: Test message\n\n
