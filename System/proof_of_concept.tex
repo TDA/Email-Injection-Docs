@@ -3,8 +3,9 @@ The previous section (Section. \ref{Arch:Test}) discussed in detail how we verif
 
 The front-end for each of the three applications is shown in Listing. \ref{code:html}. The back-end for the three languages are shown in Listings \ref{code:phpemi}, \ref{code:pyemi}, and \ref{code:rubyemi}.
 
-We tested for the headers being injected in real-time by running an instance of MailCatcher, set to listen on all SMTP messages. A sample screenshot of a fuzzed request for the Ruby backend (generated in PostMan) is shown in Fig. \ref{fig:postmanruby}. The E-Mail sent due to injecting this payload (as captured by MailCatcher) is shown in Fig. \ref{fig:mailcatcherruby}. It can be seen that the Headers have been added to the resulting E-Mail, and we have successfully managed to overwrite the `Subject' field with our own message.\\
-Both PHP and Python are injected with headers in a similar way.
+We tested for the headers being injected in real-time by running an instance of MailCatcher, set to listen on all SMTP messages. A sample screenshot of a fuzzed request for the Ruby backend (generated in PostMan) is shown in Fig. \ref{fig:postmanruby}. The E-Mail sent due to injecting this payload (as captured by MailCatcher) is shown in Fig. \ref{fig:mailcatcherruby}. It can be seen that the Headers have been added to the resulting E-Mail, and we have successfully managed to overwrite the `Subject' field with our own message.
+
+A similar injection example for PHP is shown in Fig. \ref{fig:postmanphp} and the corresponding E-Mail caught by MailCatcher is shown in Fig. \ref{fig:mailcatcherphp}.
 
 \lstset{language=HTML,caption={E-Mail Header Injection - Front-End},label={code:html}}
 \begin{lstlisting}
@@ -42,4 +43,18 @@ Both PHP and Python are injected with headers in a similar way.
 	\includegraphics[width=14cm, height=9cm]{System/EMI_Mailcatcher_Ruby}
 	\caption{E-Mail Header Injection Proof of Concept - Ruby}
 	\label{fig:mailcatcherruby}
+\end{figure}
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=14cm, height=9cm]{System/EMI_Postman_PHP}
+	\caption{Fuzzed Request for PHP}
+	\label{fig:postmanphp}
+\end{figure}
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=14cm, height=9cm]{System/EMI_Mailcatcher_PHP}
+	\caption{E-Mail Header Injection Proof of Concept - PHP}
+	\label{fig:mailcatcherphp}
 \end{figure}
