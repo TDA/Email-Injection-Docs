@@ -1,0 +1,29 @@
+\section{Proof of Concept Attacks}
+The previous section (Section. \ref{Arch:Test}) discussed in detail how we verified that our system functions according to our expectations. This section details how we validated our expectations. In order to do this, we constructed 3 sets of web applications in PHP, Python, and Ruby. Each of these applications was a simple web app that took in user input to construct and send an E-Mail.
+
+The front-end for each of the three applications is shown in Listing. \ref{code:html}.
+
+
+\lstset{language=HTML,caption={E-Mail Header Injection - Front-End},label={code:html}}
+\begin{lstlisting}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Mock Email</title>
+<meta name="author" content="Sai Pc">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div id="container" class="container">
+<form action="{Replace with the back-end}" method="post">
+<input type="text" placeholder="Email" name="email" id="email"><br>
+<textarea name="msg" rows="120" cols="20"></textarea>
+<input type="submit" value="Email Me!!">
+</form>
+</div>
+</body>
+</html>
+
+\end{lstlisting}
