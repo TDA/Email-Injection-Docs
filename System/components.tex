@@ -4,126 +4,128 @@
 This section expands on the brief overview given in the previous section \ref{sys:arch}, describing in detail the functionality of each of the components:
 
 \subsection{Crawler}
-	\label{Comp:Crawler}
-	We used an open-source Crawler built at University of California - Santa Barbara. The Crawler provides us with a continuous feed of URLs and the HTML contained in those pages. This feed is tunneled to our Form Parser over a Celery Queue.
-	
+\label{Comp:Crawler}
+We used an open-source Crawler built at the University of California - Santa Barbara. The Crawler provides us with a continuous feed of URLs and the HTML contained in those pages. This feed is tunneled to our Form Parser over a Celery Queue.
+
 \subsection{Form Parser}
-	\label{Comp:FP}
-	The actual pipeline begins at the Form Parser. This module is responsible for parsing the HTML and retrieving data about the forms on the page, including the following:
-	\begin{itemize}
-		\item Form attributes, such as method, action, etc. These dictate where we send the HTTP Request, and what kind of request it is (GET or POST).
-		\item Data about the input fields, such as their attributes, names, and default values. The default values are essential for fields like \colorbox{lightgray}{\lstinline{<input type="hidden">}} as these fields are usually used to check for the submission of forms by bots.
-		\item Presence of the \colorbox{lightgray}{\lstinline{<base>}} element, as this affects the final URL to which the form is to be submitted.
-		\item Headers associated with the page, such as \emph{referrer}. Once again, these were required to avoid the website from ignoring our system as a bot.
-	\end{itemize} 
-	The Form Parser stores all this data in our Databases, so as to allow us to reconstruct the forms later for fuzzing, as needed.
+\label{Comp:FP}
+The actual pipeline begins at the Form Parser. This module is responsible for parsing the HTML and retrieving data about the forms on the page, including the following:
+\begin{itemize}
+	\item Form attributes, such as method, action, etc. These dictate where we send the HTTP Request, and what kind of request it is (GET or POST).
+	\item Data about the input fields, such as their attributes, names, and default values. The default values are essential for fields like \colorbox{lightgray}{\lstinline{<input type="hidden">}} as these fields are usually used to check for the submission of forms by bots.
+	\item Presence of the \colorbox{lightgray}{\lstinline{<base>}} element, as this affects the final URL to which the form is to be submitted.
+	\item Headers associated with the page, such as \emph{referrer}. Once again, these were required to avoid the website from ignoring our system as a bot.
+\end{itemize} 
+The Form Parser stores all this data in our Databases, so as to allow us to reconstruct the forms later for fuzzing, as needed.
 
 \subsection{E-Mail Field Checker}
-	\label{Comp:EMFC}
-	The E-Mail Field  Checker script is the final stage in the `Data Gathering' pipeline. It receives the output of the previous stage - Form Data from the queue, and checks for the presence of E-Mail fields in those forms. If any E-Mail fields are found, it stores references to these forms in a separate table. This allows us to separate the forms that are potentially vulnerable from the forms that are not.
+\label{Comp:EMFC}
+The E-Mail Field  Checker script is the final stage in the `Data Gathering' pipeline. It receives the output of the previous stage --- Form Data from the queue --- and checks for the presence of E-Mail fields in those forms. If any E-Mail fields are found, it stores references to these forms in a separate table. This allows us to separate the forms that are potentially vulnerable from the forms that are not.
 
-	The E-Mail Field Checker particularly searches for the word 'e-mail' or 'email' within the form, instead of an explicit email field (ie) \colorbox{lightgray}{\lstinline{<input type="email">}}. This is by design, taking into account a very common design pattern used by web designers, where they may have a text field with a label called email, instead of an actual E-Mail field, for purposes of backward compatibility with older browsers. Compared to searching for explicit E-Mail fields, by searching for the presence of the word 'e-mail' or 'email' in the form, we are assured zero false negatives, as our system is bound to find an E-Mail field if it is present. However, this might lead to a low false positive rate. We discuss this possibility in Section \ref*{issues:fpr} - Design Issues. 
-	
-	The output of this stage is stored in the Database for persistence, and acts as the input to the `Payload Injection' pipeline.
-	
+The E-Mail Field Checker particularly searches for the words `e-mail', `mail' or `email' within the form, instead of an explicit email field (ie) \colorbox{lightgray}{\lstinline{<input type="email">}}. This is by design, taking into account a very common design pattern used by web designers, where they may have a text field with an id or name set to `email', instead of an actual E-Mail field, for purposes of backward compatibility with older browsers.
+
+Compared to searching for explicit E-Mail fields, by searching for the presence of the words `e-mail', `mail' or `email' in the form, not only are we assured zero false negatives --- as our system is bound to find an E-Mail field if it is present --- but the system is also substantially faster as we do not have to parse the individual form fields at this point in the pipeline. However, this might lead to a low false positive rate. We discuss this possibility in Section \ref*{issues:fpr} - Design Issues. 
+
+The output of this stage is stored in the Database for persistence and acts as the input to the `Payload Injection' pipeline.
+
 
 \subsection{E-Mail Form Retriever}
-	\label{Comp:EMFR}
-	The E-Mail Form Retriever is the first stage in the Payload Injection Pipeline. It takes care of the following three important functions:
-	\begin{itemize}
-		\item Retrieve the newly inserted forms in the \lstinline{`email_forms'} table, checking to ensure no duplication occurs before the fuzzing stage.
-		\item Reconstruct each form, using the data stored in the \lstinline{`form'} table, complete with input fields and their values.
-		\item Construct the URL for the `action' attribute of the form, so that we can send the HTTP Request to the right URL. 
-	\end{itemize}
-		
-\subsection{Fuzzer}
-	\label{Comp:Fuzzer}
-	The Fuzzer forms the heart of the system, and is the only component that interacts directly with the external websites. The Fuzzer is not just one monolithic fuzzing system, but is split into smaller modules each of which is responsible for a certain type of fuzzing.  We inject payloads in two different stages, so as to improve the efficiency, and reduce the total number of HTTP Requests we generate. This is because generating HTTP Requests is a very expensive process and is usually the cause of bottlenecks in a Crawler-Fuzzer system.
-	The two different types of payloads we use for fuzzing are,
-	\paragraph{Non-Malicious Payload}
-		\label{Comp:Fuzzer:nmp}
-		The regular or non-malicious payload is a straight forward E-Mail address of the format -- `reguser(xxxxx)@wackopicko.com', where `xxxxx' is replaced by the \lstinline{`form_id'}, so as to create a one-to-one mapping of the payloads to the forms.
-		This non-malicious payload allows us to check whether we are able to inject data into a form, and whether we are able to overcome the `anti-bot' measures on the given website.
-		
-	\paragraph{Malicious Payload}
-		\label{Comp:Fuzzer:mp}
-		In the malicious payload scenario, we inject the fields with the `bcc' - \lstinline{blind carbon copy} element. If the vulnerability is present, this will cause the server to send us a copy of the E-Mail to the E-Mail address we added as part of the `bcc` field.
-		The malicious payloads consist of 4 different payloads. Each of these payloads are crafted for a particular use case. The 4 payloads are:
-		\begin{enumerate}
-			\item
-			%inside the lstinline, we need to use \\ for \textbackslash
-			 \colorbox{lightgray}{\lstinline{nuser(xxxx)@wackopicko.com\\nbcc:maluser(xxxx)@wackopicko.com}} - This is the most minimal payload, it injects a `newline' character followed by the `bcc' field.
-			\item \colorbox{lightgray}{\lstinline{nuser(xxxx)@wackopicko.com\\r\\nbcc:maluser(xxxx)@wackopicko.com}} - This payload is added for purposes of cross-platform fuzzing (ie) `\textbackslash{}r\textbackslash{}n' is the `Carriage Return - New Line (CRLF)' used on Windows systems. 
-			\item \colorbox{lightgray}{\lstinline{nuser(xxxx)@wackopicko.com\\nbcc:maluser(xxxx)@wackopicko.com\\nx-check:in}} - The addition of the `x-check:in' header field to the payload is due to Python's exhibited behavior when attaching
-			headers. Instead of overwriting a header if it is present, it ignores duplicate headers. So, in case the `bcc' field is already present as part of the headers, our injected `bcc' header would be ignored. In order to overcome this, we need to inject a new header that has not been seen before. Hence, we inject our own `x-dummy-header' to ensure we can get results if the injection was successful.
-			\item \colorbox{lightgray}{\lstinline{nuser(xxxx)@wackopicko.com\\r\\nbcc:maluser(xxxx)@wackopicko.com\\r\\nx-check:in}} - Same as previous payload, but containing the additional `\textbackslash{}r' for Windows compatibility.
-			 
-		\end{enumerate}
-		The `xxxx' in the above payloads is replaced by the \lstinline{`form_id'}, so as to create a one-to-one mapping of the payloads to the forms. The coverage provided by each Payload is shown in Fig. \ref{tab:payloadcov}.\\
+\label{Comp:EMFR}
+The E-Mail Form Retriever is the first stage in the Payload Injection Pipeline. It takes care of the following three important functions:
+\begin{itemize}
+	\item Retrieve the newly inserted forms in the \lstinline{`email_forms'} table, checking to ensure no duplication occurs before the fuzzing stage.
+	\item Reconstruct each form, using the data stored in the \lstinline{`form'} table, complete with input fields and their values.
+	\item Construct the URL for the `action' attribute of the form so that we can send the HTTP Request to the right URL. 
+\end{itemize}
 
-	\begin{table}[!htbp]
-		\centering
-		\begin{tabular}{|c|c|c|}
-			\hline
-			Payload & Languages covered & Platforms covered\\
-			\hline
-			1 & PHP, Java, Ruby, etc. & Unix\\
-			\hline
-			2 & PHP, Java, Ruby, etc. & Windows\\
-			\hline
-			3 & Python & Unix\\
-			\hline
-			4 & Python & Windows\\
-			\hline
-		\end{tabular}
-		\caption{Payload Coverage}
-		\label{tab:payloadcov}
-	\end{table}
-	Along with the payload, the Fuzzer also has to inject data into the other fields of the form. This data also has to pass validation constraints on the individual input fields e.g.\ for a name field, numbers might not be allowed. It is essential that the data we inject into the input fields adhere to the constraints. Our Fuzzer does this by making use of a `Data Dictionary' which has predefined `keys' and `values' for common input fields such as name, date, username, password, text, etc. The default values for these are generated on-the-fly for each form, based on generally followed guidelines for such fields. e.g.\ password fields should consist of at least one uppercase letter, one lowercase letter, and a special character.
+\subsection{Fuzzer}
+\label{Comp:Fuzzer}
+The Fuzzer forms the heart of the system and is the only component that interacts directly with the external websites. The Fuzzer is not just one monolithic fuzzing system but is split into smaller modules each of which is responsible for a particular type of fuzzing.  We inject payloads in two different stages, so as to improve the efficiency, and reduce the total number of HTTP Requests we generate. This is because making HTTP Requests is a very expensive process and is usually the cause of bottlenecks in a Crawler-Fuzzer system.
+The two different types of payloads we use for fuzzing are,
+\paragraph{Non-Malicious Payload}
+\label{Comp:Fuzzer:nmp}
+The regular or non-malicious payload is a straight forward E-Mail address of the format -- `reguser(xxxxx)@wackopicko.com', where `xxxxx' is replaced by the \lstinline{`form_id'}, so as to create a one-to-one mapping of the payloads to the forms.
+This non-malicious payload allows us to check whether we can inject data into a form and whether we can overcome the `anti-bot' measures on the given website.
+
+\paragraph{Malicious Payload}
+\label{Comp:Fuzzer:mp}
+In the malicious payload scenario, we inject the fields with the `bcc' - \lstinline{blind carbon copy} element. If the vulnerability is present, this will cause the server to send us a copy of the E-Mail to the E-Mail address we added as part of the `bcc` field.
+The malicious payloads consist of 4 different payloads. Each of these payloads is crafted for a particular use case. The four payloads are:
+\begin{enumerate}
+	\item
+	%inside the lstinline, we need to use \\ for \textbackslash
+	\colorbox{lightgray}{\lstinline{nuser(xxxx)@wackopicko.com\\nbcc:maluser(xxxx)@wackopicko.com}} - This is the most minimal payload, it injects a `newline' character followed by the `bcc' field.
+	\item \colorbox{lightgray}{\lstinline{nuser(xxxx)@wackopicko.com\\r\\nbcc:maluser(xxxx)@wackopicko.com}} - This payload is added for purposes of cross-platform fuzzing (ie) `\textbackslash{}r\textbackslash{}n' is the `Carriage Return - New Line (CRLF)' used on Windows systems. 
+	\item \colorbox{lightgray}{\lstinline{nuser(xxxx)@wackopicko.com\\nbcc:maluser(xxxx)@wackopicko.com\\nx-check:in}} - The addition of the `x-check:in' header field to the payload is due to Python's exhibited behavior when attaching
+	headers. Instead of overwriting a header if it is present, it ignores duplicate headers. So, in case the `bcc' field is already present as part of the headers, our injected `bcc' header would be ignored. In order to overcome this, we need to inject a new header that has not been seen before. Hence, we inject our own `x-dummy-header' to ensure we can get results if the injection was successful.
+	\item \colorbox{lightgray}{\lstinline{nuser(xxxx)@wackopicko.com\\r\\nbcc:maluser(xxxx)@wackopicko.com\\r\\nx-check:in}} - Same as previous payload, but containing the additional `\textbackslash{}r' for Windows compatibility.
 	
-	Once the data (including the payload) for the form is ready, the Fuzzer constructs the appropriate HTTP Request (GET or POST), and sends the HTTP Request to the URL that was generated by the E-Mail Form Retriever (Section. \ref{Comp:EMFR}). 
-	
-		
-\subsection{E-Mail Analyzer}
-	\label{Comp:EMA}
-	The E-Mail Analyzer checks for the presence of injected data in the received E-Mails. This module works on the E-Mails received and stored by our Postfix server, and depending on the user who received the E-Mail, it performs different functions. This is outlined below:
-	\paragraph{Analyzing Regular E-Mail}
-	`Regular E-Mail' refers to the E-Mails received by the \colorbox{lightgray}{\lstinline{reguser(xxxx)@wackopicko.com}} --- where xxxx is the \lstinline{form_id} --- that were sent due to injecting the `regular or non-malicious' payload (discussed in Section. \ref{Comp:Fuzzer:nmp}). The objective of the analysis on this E-Mail is to figure out whether the input fields that we injected with data appear on the resulting E-Mail, and if so, which fields appear where.
-	
-	In order to find this, we read through each received E-Mail, and check whether \emph{any} of the fields we injected with data appear as part of either the headers or the body of the E-Mail. If they do, we add them to the list of fields that can potentially result in a E-Mail Header Injection for the given E-Mail. We then pass on this information back to the Fuzzer pipeline, along with the \lstinline{form_id}, so that the Fuzzer can now inject the malicious payloads into the same form, completing the pipeline.
-	
-	\paragraph{Analyzing E-Mail with payloads}
-	`E-Mail with payloads' refer to E-Mails received by either the \colorbox{lightgray}{\lstinline{nuser(xxxx)@wackopicko.com}} or \colorbox{lightgray}{\lstinline{maluser(xxxx)@wackopicko.com}} accounts. These E-Mails were received due to injecting the malicious payloads that were discussed in Section. \ref{Comp:Fuzzer:mp}. Analysis of these E-Mails are considerably simpler than that of the regular E-Mails. This is due to the fact that this involves lesser processing of the contents of the E-Mail compared to the previous section.
-		\subparagraph{Detecting injected bcc headers}
-		As discussed in the payloads section (\ref{Comp:Fuzzer:mp}), the payloads were crafted in such a way that the mails received by `maluser' account directly indicate the presence of the injected `bcc' field. Thus, we simply parse the E-Mails and store them in the Database.
-		
-		\subparagraph{Detecting injected x-check headers}
-		E-Mails not received by the `maluser' account but by the `nuser' account constitute a special category of E-Mails.
-		These E-Mails could have been generated due to two reasons:
-		\begin{enumerate}
-			\item The websites performed some sanitization routines and stripped out the `bcc' part of the payload, thereby sending E-Mails only to the `nuser' account. These E-Mails then act as proof that the vulnerability was not found on the given website.
-			\item A more conducive scenario for us is when the `bcc' header was ignored for some reason, e.g.\ Python's default behavior when it encounters duplicate headers. In this case, we check whether the E-Mail contains the custom header `x-check'. If it does, then this is a successful attack as well, and we store it in the Database.
-		\end{enumerate}
-\subsection{Database}
-	We collect and store as much data as possible at each stage of the pipeline. This is due to the two following reasons:
-	\begin{enumerate}
-		\item The data is used to validate our findings.
-		\item The data collected can be used for other research projects in this area.
-	\end{enumerate}
-	Each table in our database is listed in Table. \ref{tab:dbtf} along with the data it is designed to hold. A schema of the database is shown in Figure. \ref{fig:dbschema}.
-	
-	
+\end{enumerate}
+The `xxxx' in the above payloads is replaced by the \lstinline{`form_id'}, so as to create a one-to-one mapping of the payloads to the forms. The coverage provided by each Payload is shown in Fig. \ref{tab:payloadcov}.\\
+
 \begin{table}[!htbp]
 	\centering
-	\input{System/tables}		
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Payload & Languages covered & Platforms covered\\
+		\hline
+		1 & PHP, Java, Ruby, etc. & Unix\\
+		\hline
+		2 & PHP, Java, Ruby, etc. & Windows\\
+		\hline
+		3 & Python & Unix\\
+		\hline
+		4 & Python & Windows\\
+		\hline
+	\end{tabular}
+	\caption{Payload Coverage}
+	\label{tab:payloadcov}
+\end{table}
+Along with the payload, the Fuzzer also has to inject data into the other fields of the form. This data also has to pass validation constraints on the individual input fields e.g.\ for a name field, numbers might not be allowed. It is essential that the data we inject into the input fields adhere to the constraints. Our Fuzzer does this by making use of a `Data Dictionary' which has predefined `keys' and `values' for standard input fields such as name, date, username, password, text, etc. The default values for these are generated on-the-fly for each form, based on generally followed guidelines for such fields. e.g.\ password fields should consist of at least one uppercase letter, one lowercase letter, and a special character.
+
+Once the data (including the payload) for the form is ready, the Fuzzer constructs the appropriate HTTP Request (GET or POST), and sends the HTTP Request to the URL that was generated by the E-Mail Form Retriever (Section. \ref{Comp:EMFR}). 
+
+
+\subsection{E-Mail Analyzer}
+\label{Comp:EMA}
+The E-Mail Analyzer checks for the presence of injected data in the received E-Mails. This module works on the E-Mails received and stored by our Postfix server, and depending on the user who received the E-Mail, it performs different functions. This is outlined below:
+\paragraph{Analyzing Regular E-Mail}
+`Regular E-Mail' refers to the E-Mails received by the \colorbox{lightgray}{\lstinline{reguser(xxxx)@wackopicko.com}} --- where xxxx is the \lstinline{form_id} --- that were sent due to injecting the `regular or non-malicious' payload (discussed in Section. \ref{Comp:Fuzzer:nmp}). The objective of the analysis on this E-Mail is to figure out whether the input fields that we injected with data appear on the resulting E-Mail, and if so, which fields appear where.
+
+To find this, we read through each received E-Mail, and check whether \emph{any} of the fields we injected with data appear as part of either the headers or the body of the E-Mail. If they do, we add them to the list of fields that can potentially result in an E-Mail Header Injection for the given E-Mail. We then pass on this information back to the Fuzzer pipeline, along with the \lstinline{form_id}, so that the Fuzzer can now inject the malicious payloads into the same form, completing the pipeline.
+
+\paragraph{Analyzing E-Mail with payloads}
+`E-Mail with payloads' refer to E-Mails received by either the \colorbox{lightgray}{\lstinline{nuser(xxxx)@wackopicko.com}} or \colorbox{lightgray}{\lstinline{maluser(xxxx)@wackopicko.com}} accounts. These E-Mails were received due to injecting the malicious payloads that were discussed in Section. \ref{Comp:Fuzzer:mp}. Analysis of these E-Mails is considerably simpler than that of the regular E-Mails. This is due to the fact that this involves lesser processing of the contents of the E-Mail compared to the previous section.
+\subparagraph{Detecting injected bcc headers}
+As discussed in the payloads section (\ref{Comp:Fuzzer:mp}), the payloads were crafted in such a way that the E-Mails received by `maluser' account directly indicate the presence of the injected `bcc' field. Thus, we simply parse the E-Mails and store them in the Database.
+
+\subparagraph{Detecting injected x-check headers}
+E-Mails not received by the `maluser' account but by the `nuser' account constitute a special category of E-Mails.
+These E-Mails could have been generated due to two reasons:
+\begin{enumerate}
+	\item The websites performed some sanitization routines and stripped out the `bcc' part of the payload, thereby sending E-Mails only to the `nuser' account. These E-Mails then act as proof that the vulnerability was not found on the given website.
+	\item A more conducive scenario for us is when the `bcc' header was ignored for some reason, e.g.\ Python's default behavior when it encounters duplicate headers. In this case, we check whether the E-Mail contains the custom header `x-check'. If it does, then this is a successful attack as well, and we store it in the Database.
+\end{enumerate}
+\subsection{Database}
+We collect and store as much data as possible at each stage of the pipeline. This is due to the two following reasons:
+\begin{enumerate}
+	\item The data is used to validate our findings.
+	\item The data collected can be used for other research projects in this area.
+\end{enumerate}
+Each table in our database is listed in Table. \ref{tab:dbtf} along with the data it is designed to hold. A schema of the database is shown in Figure. \ref{fig:dbschema}.
+
+
+\begin{table}[!htbp]
+	\centering
+	\input{System/tables}        
 	\caption{Database - Tables}
 	\label{tab:dbtf}
 \end{table}
 
 \begin{figure}[!htbp]
- 	\centering
- 	\includegraphics[width=15cm, height=11cm]{System/dbschema}
+	\centering
+	\includegraphics[width=15cm, height=11cm]{System/dbschema}
 	\caption{Database Schema}
 	\label{fig:dbschema}
 \end{figure}
-	
+

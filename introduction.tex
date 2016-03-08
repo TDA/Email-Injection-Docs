@@ -1,12 +1,12 @@
 \chapter{Introduction}
 \paragraph{}
-	The World Wide Web has single handedly brought about a change in the way we use computers. The ubiquitous nature of the Web has made it possible for the general public to access it anywhere, and on multiple devices like Phones, Laptops, Personal Digital Assistants, and even on TVs and cars. This has ushered in an era of responsive web applications which depend on user input. While this rapid pace of development has improved the speed of dissemination of information, it does come at a cost. Attackers have an added incentive to break into user E-Mail accounts more than ever. E-Mail accounts are usually connected to almost all other online accounts of a user, and E-Mails continue to serve as the principal mode of official communication on the web for most institutions. Thus, the impact an attacker can have by taking over just a single E-Mail account of an unsuspecting end user is of a large magnitude. 
+	The World Wide Web has single-handedly brought about a change in the way we use computers. The ubiquitous nature of the Web has made it possible for the general public to access it anywhere, and on multiple devices like Phones, Laptops, Personal Digital Assistants, and even on TVs and cars. This has ushered in an era of responsive web applications which depend on user input. While this rapid pace of development has improved the speed of dissemination of information, it does come at a cost. Attackers have an added incentive to break into user E-Mail accounts more than ever. E-Mail accounts are usually connected to almost all other online accounts of a user, and E-Mails continue to serve as the principal mode of official communication on the web for most institutions. Thus, the impact an attacker can have by taking over just a single E-Mail account of an unsuspecting end user is of an enormous magnitude. 
 	
 	Since attackers are typically users of the system, if user input is to be trusted, then developers need to have proper sanitization routines in place. Many different injection attacks like the ever popular SQL injection or cross-site scripting (XSS) \cite{OWASPT10} are possible due to improper sanitization of user input. 
 	
-	Our research focuses on a lesser known injection attack known as E-Mail Header Injection. E-Mail header Injection can be considered as the E-Mail equivalent of HTTP Header Injection Vulnerability. The vulnerability exists in the reference implementation of the built-in “mail” functionality in popular languages like PHP, Java, Python, and Ruby. With the proper injection string, this vulnerability can be exploited to inject additional headers and/or modify existing headers in an E-Mail message.
-
-	E-Mail Header Injection attacks have the potential to allow an attacker to perform E-Mail spoofing, resulting in vicious Phishing attacks that can lead to identity theft.
+	Our research focuses on a lesser known injection attack known as E-Mail Header Injection. E-Mail Header Injection can be considered as the E-Mail equivalent of HTTP Header Injection Vulnerability. The vulnerability exists in the reference implementation of the built-in “mail” functionality in popular languages like PHP, Java, Python, and Ruby. With the proper injection string, this vulnerability can be exploited to inject additional headers and/or modify existing headers in an E-Mail message.
+	
+	E-Mail Header Injection attacks have the potential to allow an attacker to perform E-Mail Spoofing, resulting in vicious Phishing attacks that can lead to identity theft.
 	The objective of our research is to find if this vulnerability is widespread on the World Wide Web, and if so, how wide the impact is, and whether further research is required in this area.
 	
 	In order to do this, we performed an expansive crawl of the web, extracting forms that had E-Mail fields in them, and then injecting them with different payloads. We then audited the received emails to see if any of the injected data was present. This allowed us to classify whether a particular URL was vulnerable to the attack. This entire system works in a black-box manner, without looking at the web application's source code, and only analyzing the emails we receive based on the injected payloads.
@@ -14,15 +14,15 @@
 \paragraph{Structure of document} % describes the remaining sections and gives a short desc about them
 This thesis document is divided logically into the following sections:
 \begin{itemize}
-	\item Chapter 2 discusses the background of E-Mail Header Injection, a brief history of the vulnerability, and proceeds onto enumerate the languages and platforms affected by this vulnerability.% describe each section 
+	\item Chapter 2 discusses the background of E-Mail Header Injection, a brief history of the vulnerability, and proceeds on to enumerate the languages and platforms affected by this vulnerability.
 	
 	\item Chapter 3 discusses the System design, and enunciates the architecture and the components of the system, along with a detailed test plan to validate the system. It also enumerates the issues faced, and the assumptions made.
 	
 	\item Chapter 4 briefly describes the experimental setup and sheds light on how we overcame the issues and assumptions discussed in the previous section.
 	
-	\item Chapter 5 presents our findings, and our analysis of the said findings.
+	\item Chapter 5 presents our findings and our analysis of the said findings.
 	
-	\item Chapter 6 continues the discussion of the results, the lessons learned over the course of the project, limitations, and a suitable mitigation strategy to overcome the vulnerability.
+	\item Chapter 6 continues the discussion of the results; the lessons learned over the course of the project, limitations, and a suitable mitigation strategy to overcome the vulnerability.
 	
 	\item Chapter 7 explores related work in the area, and clearly shows how and why our research is different.
 	
@@ -35,11 +35,11 @@ We hope that our research sheds some light on this relatively less popular vulne
 	
 	\item{A black-box approach to detecting the presence of E-Mail header injection vulnerability in a web application.}
 	
-	\item{A detection and classification tool based on the above approach, that will automatically detect such E-Mail Header Injection vulnerabilities in a web application.}
+	\item{A detection and classification tool based on the above approach, which will automatically detect such E-Mail Header Injection vulnerabilities in a web application.}
 	
-	\item{A quantification of the presence of such vulnerabilities on the World Wide Web, based on a expansive crawl across the Web, including {'x'} URLs and {'y'} forms.}
+	\item{A quantification of the presence of such vulnerabilities on the World Wide Web, based on an expansive crawl across the Web, including {'x'} URLs and {'y'} forms.}
 	
 \end{itemize}
 
 \paragraph{}
-The next chapter goes into the background of the problem at hand, and gives a brief history of E-Mail Header Injection.
+The next chapter goes into the background of the problem at hand and gives a brief history of E-Mail Header Injection.

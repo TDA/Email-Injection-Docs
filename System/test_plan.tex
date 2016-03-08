@@ -1,7 +1,7 @@
 \section{Test Plan}
 \label{Arch:Test}
 The test plan for our system includes a set of unit tests for each module in the pipeline. Further, we have unit tests for every %every instead of each
- individual function in the modules. The functions are tested separately, using mocks and stubs, so as to ensure isolated testing. Further, we have unit tests for each individual function in the modules.
+individual function in the modules. The functions are tested separately, using mocks and stubs, so as to ensure isolated testing. Further, we have unit tests for each function in the modules.
 
 This section outlines the test plan in the following manner. We list the modules that are tested, and then describe what each unit test tests for.
 \begin{itemize}
@@ -11,11 +11,11 @@ This section outlines the test plan in the following manner. We list the modules
 		\item \colorbox{lightgray}{\lstinline{test_db_connection}} - Tests whether the Database Connection is set up and queries can be executed.
 		\item \colorbox{lightgray}{\lstinline{test_form_parser}} - Tests for the proper parsing of HTML, and if the system exits cleanly in case parsing isn't possible.
 	\end{itemize}
-
+	
 	\item E-Mail Field Checker
 	\begin{itemize}
 		\item \colorbox{lightgray}{\lstinline{test_check_for_email}} - Tests whether the system finds E-Mail fields in the form when the words `e-mail' or `email' are present in the form (case insensitive).
-	
+		
 		\item \colorbox{lightgray}{\lstinline{test_check_for_no_email}} - Tests whether the system finds no E-Mail fields when the words `e-mail' or `email' are \emph{not} present in the form (case insensitive).
 		\item
 	\end{itemize}
@@ -37,7 +37,7 @@ This section outlines the test plan in the following manner. We list the modules
 	\end{itemize}
 	\item E-Mail Analyzer
 	\begin{itemize}
-		\item \colorbox{lightgray}{\lstinline{test_load_mail}} - Tests whether the mails are loaded and parsed properly by the E-Mail Analyzer.
+		\item \colorbox{lightgray}{\lstinline{test_load_mail}} - Tests whether the E-Mails are loaded and parsed correctly by the E-Mail Analyzer.
 		\item \colorbox{lightgray}{\lstinline{test_parse_headers}} - Tests for the proper parsing of headers present in the E-Mail.
 		\item \colorbox{lightgray}{\lstinline{test_analyze_regular_mail}} - Tests whether the E-Mail Analyzer parses the regular E-Mail properly and extracts the injected input fields that are present in the E-Mail.
 		\item \colorbox{lightgray}{\lstinline{test_analyze_malicious_mail}} - Tests whether the E-Mail Analyzer parses the E-Mails received due to the malicious payloads properly, is able to extract the `bcc' headers, and is able to link them to the proper fuzzing request and payload.

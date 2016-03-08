@@ -1,7 +1,55 @@
 \section[Issues]{Design Issues}
 
-This section will describe the issues we might face with the approach that we have chosen, and the design decisions.
+This section will describe the issues we faced with the design decisions we made, and how we did our best to mitigate them, and their effect on the system.
 
 \begin{itemize}
-	\item \label{issues:fpr}False Positive rate for the E-Mail Field Checker
+	\item \label{issues:fpr}False Positive rate for the E-Mail Field Checker\\
+	As discussed in Section \ref{Comp:EMFC}, we only search for the words `email', `mail' or `e-mail' (case insensitive) inside the forms to detect the presence of E-Mail fields, instead of searching for an \colorbox{lightgray}{\lstinline{<input type = email>}}. This might result in a false positive in certain forms, like the one shown in Listing. \ref{code:false_positive}.
+	
+	\lstset{language=HTML,caption={E-Mail Field Checker - False Positives},label={code:false_positive}}
+	\begin{lstlisting}
+	<form method="post">
+	E-Mail us if you have any questions!!
+	<input type="text" name="query"><br>
+	<input type="submit" value="Search">
+	</form>
+	\end{lstlisting}
+	
+	The word `E-Mail' on Line 2 will result in our system classifying this form as a potential E-Mail form, while it clearly is not. However, as we will see, this is not really a big issue, as despite being added to the \lstinline{`email_forms'} table, this form will never be injected in the `fuzzer' due to the absence of the appropriate input field in the form. We chose to go with this design, as it allows us to detect \emph{every} form that provides the capability to send or receive E-Mail, and it lets us do so in a very fast and inexpensive way.
+	
+	
+	\item Parallelism for the system\\
+	Every component in the pipeline benefits hugely from parallel processing of the data. However, Python's GIL (Global Interpreter Lock) does not allow the running of multiple native threads concurrently. To overcome this, we used a Celery task queue (discussed in Section \ref{exp:Celery}), which allowed a fair level of parallelism that vanilla Python does not provide by default. Even though this makes the system faster than a single-threaded approach, it still leaves room for improvement in terms of speed. Despite the obvious speed drop, we chose to go with Python, for the raw power it provides, its text processing capabilities, PCRE (Perl Compatible Regular Expressions) compatibility, and the numerous libraries for HTML Parsing, HTTP request generation, etc.
+	
+	\item URL Construction\\
+	The multiple ways in which a URL is specified (i.e.\ Relative and Absolute URLs) complicates the construction of the URL from the `action' attribute of the form.  As an example, the following URLs are all equivalent (as parsed by a browser, assuming we are in the path `www.website.com'):
+	
+	\begin{itemize}
+		\item \colorbox{lightgray}{\lstinline{action=mail.php}}
+		\item \colorbox{lightgray}{\lstinline{action=./mail.php}}
+		\item \colorbox{lightgray}{\lstinline{action=http://website.com/mail.php}}
+		\item \colorbox{lightgray}{\lstinline{action=www.website.com/mail.php}}
+	\end{itemize}
+	Add to this, if the form is a self-referencing form\footnote{A self-referencing form is one which submits the form data to itself. It includes logic to both display the form and process it. It is a \emph{very} common feature in PHP based scripts.}, and is present in mail.php, the following are equivalent to the above URLs as well:
+	\begin{itemize}
+		\item \colorbox{lightgray}{\lstinline{action=""}}
+		\item \colorbox{lightgray}{\lstinline{action=#}}
+		\item `action' is completely omitted
+	\end{itemize}
+	Also, relative URLs pose another problem. If the URL of the form page ends with `/' and the `action' specifies a path starting with `/' (illustrated in Listing \ref{issues:url}), we would need to strip one of the two slashes. This increases the overall complexity of our URL generator, as we have to account for all these possibilities.
+		
+	\lstset{language=HTML,caption={Issues - URL Construction},label={issues:url}}
+	\begin{lstlisting}
+	Current URL = www.website.com/
+	<form action=/mail.php>
+	Resulting URL = www.website.com/mail.php and NOT www.website.com//mail.php
+	\end{lstlisting}
+	
+	We chose to go with a best-effort approach to this problem, where our system covers all these possibilities, however, we cannot know for certain whether this works for other unforeseen ways of specifying a URL.
+	
+	\item Black-box Testing
+	\item Mapping responses to requests
+	\item Spam Blockers
+	\item Handling Malformed HTML
+	\item Crawling WordPress and other CMS based websites
 \end{itemize}
