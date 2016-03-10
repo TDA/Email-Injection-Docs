@@ -6,30 +6,36 @@ This section describes the most common measures that can be taken to prevent the
 	A list of known secure libraries for each popular language and framework is shown in Table \ref{tab:maillib}
 	
 	Using libraries such as PEAR Mail, PHPMailer, Apache Commons E-Mail, Contact Form 7, etc. can significantly reduce the occurrence of this type of attack.
-	
 	\begin{table}[!htbp]
 		\centering
-		\begin{tabular}{|c|c|}
+		\begin{tabular}{|l|l|}
 			\hline
+			\multicolumn{1}{|>{\centering\arraybackslash}m{23mm}|}\textbf{Very long title}} 
+			& \multicolumn{1}{>{\centering\arraybackslash}m{23mm}|}{\textbf{Very long title}} 
+			& \multicolumn{1}{>{\centering\arraybackslash}m{60mm}|}{\textbf{Normal title}}\\
 			Language & Mail Libraries\\
 			\hline
-			PHP & {{PEAR Mail\footnote{PEAR Mail Website: https://pear.php.net/package/Mail}, PHPMailer\footnote{PHPMailer Website: https://github.com/PHPMailer/PHPMailer}, Swiftmailer\footnote{Swiftmailer Website: http://swiftmailer.org/}}}\\
+			PHP & {{PEAR Mail\tablefootnote{PEAR Mail Website: https://pear.php.net/package/Mail}, PHPMailer\tablefootnote{PHPMailer Website: https://github.com/PHPMailer/PHPMailer}, Swiftmailer\tablefootnote{Swiftmailer Website: http://swiftmailer.org/}}}\\
 			\hline
-			Python & PythonMail\\
+			Python & SMTPLib with email.header.Header\tablefootnote{instead of using email.parser.Parser to parse the header}\\
 			\hline
-			Java & Apache Commons E-Mail\footnote{https://commons.apache.org/proper/commons-email/}\\
+			Java & Apache Commons E-Mail\tablefootnote{Apache Commons E-Mail: https://commons.apache.org/proper/commons-email/}\\
 			\hline
-			Ruby & Ruby\\
+			Ruby & Ruby Mail \textgreater{}= 2.6\tablefootnote{Ruby Mail Website: https://rubygems.org/gems/mail}\\
 			\hline
-			WordPress & Contact Form 7\footnote{https://wordpress.org/plugins/contact-form-7/}\\
+			WordPress & Contact Form 7\tablefootnote{Contact Form 7 Download: https://wordpress.org/plugins/contact-form-7/}\\
 			\hline
 		\end{tabular}
 		\caption{Mail Libraries to prevent E-Mail Header Injection}
 		\label{tab:maillib}
 	\end{table}
 	
-	\item CMS
+	\item Use a Content Management System (CMS) \\
+	Content management systems like WordPress and Drupal include certain libraries to prevent E-Mail Header Injection. Thus, websites built with such CMS' are usually resistant to these attacks. However, it is advised to use the right E-Mail plugins when using such CMS', as not all plugins might be secure.
+	An example of a secure plug-in is included as part of Table \ref{tab:maillib}.
+	
 	\item Input Validation
+	
 \end{itemize}
 
 
