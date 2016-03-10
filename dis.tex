@@ -16,6 +16,10 @@
 \usepackage[justification=centering]{caption}
 \usepackage[pageanchor=true,plainpages=false,pdfpagelabels,bookmarks,bookmarksnumbered]{hyperref}
 
+\usepackage{footnote} % for footnotes in tables
+\makesavenoteenv{tabular} % both needed to print footnote
+\makesavenoteenv{table}
+
 \definecolor{mygray}{rgb}{0.6,0.6,0.6}
 \definecolor{lightgray}{rgb}{0.92,0.92,0.92}
 \definecolor{darkgreen}{rgb}{0,0.7,0}

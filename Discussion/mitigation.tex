@@ -1,7 +1,35 @@
 \section[Mitigation Strategy]{How to prevent this attack}
-	Describes how to prevent this attack, stuff like:
-	\begin{itemize}
-		\item Use Mail Libraries
-		\item CMS
-		\item Input Validation
-	\end{itemize}
+This section describes the most common measures that can be taken to prevent the occurrence of this vulnerability, or at least reduce the impact.
+\begin{itemize}
+	\item Use Mail Libraries\\
+	This is the preferred way of combating this vulnerability. Using a library that is well tested can remove the burden of input sanitization from the developer. Also, since most of these libraries are open-source, bugs are identified quicker and fixes are readily available.
+	A list of known secure libraries for each popular language and framework is shown in Table \ref{tab:maillib}
+	
+	Using libraries such as PEAR Mail, PHPMailer, Apache Commons E-Mail, Contact Form 7, etc. can significantly reduce the occurrence of this type of attack.
+	
+	\begin{table}[!htbp]
+		\centering
+		\begin{tabular}{|c|c|}
+			\hline
+			Language & Mail Libraries\\
+			\hline
+			PHP & {{PEAR Mail\footnote{PEAR Mail Website: https://pear.php.net/package/Mail}, PHPMailer\footnote{PHPMailer Website: https://github.com/PHPMailer/PHPMailer}, Swiftmailer\footnote{Swiftmailer Website: http://swiftmailer.org/}}}\\
+			\hline
+			Python & PythonMail\\
+			\hline
+			Java & Apache Commons E-Mail\footnote{https://commons.apache.org/proper/commons-email/}\\
+			\hline
+			Ruby & Ruby\\
+			\hline
+			WordPress & Contact Form 7\footnote{https://wordpress.org/plugins/contact-form-7/}\\
+			\hline
+		\end{tabular}
+		\caption{Mail Libraries to prevent E-Mail Header Injection}
+		\label{tab:maillib}
+	\end{table}
+	
+	\item CMS
+	\item Input Validation
+\end{itemize}
+
+

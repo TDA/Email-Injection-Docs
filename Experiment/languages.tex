@@ -1,3 +1,26 @@
 \section{Languages used}
 
-Will very briefly (maybe one paragraph) describe what we used to create the system. (Python 2) Will also describe the limitation of Python, (GIL basically), and point to next section.
+We used Python 2 to build the system. The following factors influenced our choice of language: text processing capabilities, PCRE (Perl Compatible Regular Expressions) compatibility, and the numerous libraries for HTML Parsing, HTTP request generation, mail processing etc.
+We made use of the following major libraries (shown in table \ref{tab:libs}) for our system.
+
+\begin{table}[!htbp]
+	\centering
+	\begin{tabular}{|c|c|}
+		\hline
+		Library & Functionality\\
+		\hline
+		Requests & HTTP Request Generation\\
+		\hline
+		Beautiful Soup & HTML Parsing\\
+		\hline
+		Mailbox & Mail Processing\\
+		\hline
+		Celery & Task Queues\\
+		\hline
+	\end{tabular}
+	\caption{Libraries and their functions}
+	\label{tab:libs}
+\end{table}
+
+Despite the many benefits that Python 2 provides, we had certain issues with the language --- discussed in Section \ref{issues:parallel} --- like Python's GIL (Global Interpreter Lock) which does not allow the running of multiple native threads concurrently.
+The following section (Section \ref{exp:Celery}) describes in detail the task queue system (Celery) that we used to overcome this limitation of Python.
