@@ -7,6 +7,11 @@
 		Thus, our system never receives dynamically injected forms from the web server and hence is unable to detect whether these vulnerabilities are present in such forms. The only workaround would be, ironically, to use JavaScript to query for the \lstinline|document.getElementsByTagName('html')[0].innerHTML| (from inside web browser automation tools like Selenium, etc.), and then use that as the source code for our URL.
 		
 		Since this would add unnecessary bulk and complexity to our application, we chose not to do it, and thus, we consider this to be a limitation.
-		\item Blogs powered by WordPress/Drupal
+		\item Blogs powered by WordPress/Drupal\\
+		In addition to what was discussed in Section \ref{issues:cms}, we found that certain WordPress plugins also prevent the E-Mail Header Injection attack by sanitizing user input on Contact Forms. Some of these are discussed in the following section.
+		
+		\item Blacklisting by websites and ISPs\\
+		During the actual crawl, we ended up getting blacklisted by a few websites, and Internet Service Providers (ISPs)
+		
 		\item Mail libraries
 	\end{itemize}
