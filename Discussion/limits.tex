@@ -11,7 +11,9 @@
 		In addition to what was discussed in Section \ref{issues:cms}, we found that certain WordPress plugins also prevent the E-Mail Header Injection attack by sanitizing user input on Contact Forms. Some of these are discussed in the following section.
 		
 		\item Blacklisting by websites and ISPs\\
-		During the actual crawl, we ended up getting blacklisted by a few websites, and Internet Service Providers (ISPs)
+		During the actual crawl, we ended up getting blacklisted by a few websites, and Internet Service Providers (ISPs). We then had to create up a blacklist of our own to ensure that we did not inject these websites.
 		
-		\item Mail libraries
+		\item E-Mail libraries\\
+        E-Mail libraries like the PHP Extension and Application Repository's (PEAR) Mail Library provide inbuilt sanitization checks for user input. While this is technically not a limitation of our project, it still makes it such that we are not able to inject these sites successfully, and that is enough to justify its inclusion in the limitations section.
+        A few other libraries for each language are discussed in the following section.
 	\end{itemize}
