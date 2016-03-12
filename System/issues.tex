@@ -1,5 +1,5 @@
 \section[Issues]{Design Issues}
-
+\label{sys:issues}
 This section will describe the issues we faced with the design decisions we made, and how we did our best to mitigate them, and their effect on the system.
 
 \begin{itemize}
@@ -55,6 +55,7 @@ This section will describe the issues we faced with the design decisions we made
 	Since we are generating multiple payloads for each form, and the received E-Mail may not contain the name of the domain from which we received the E-Mail, it is difficult to map the response E-Mails to the right requests. We instead use the \lstinline{`form_id'} as part of the payload to reduce the difficulty in mapping responses to requests.
 	
 	\item Bot Blockers\\
+	\label{issues:captcha}
     Since our system is fully automated, it is also susceptible to being stopped by `bot-blockers' i.e.\ mechanisms built-in to a website to prevent automated crawls or form submissions. Measures like CAPTCHA (Completely Automated Public Turing test to tell Computers and Humans Apart) and hidden form fields are often used to detect bots.
     We have made sure that we do not affect hidden fields in the form, however, we do not have an anti-CAPTCHA functionality built into our system, and thus our system does not inject such websites.
     
