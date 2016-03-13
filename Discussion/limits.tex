@@ -7,11 +7,12 @@
 		Thus, our system never receives dynamically injected forms from the web server and hence is unable to detect whether these vulnerabilities are present in such forms. The only workaround would be, ironically, to use JavaScript to query for the \lstinline|document.getElementsByTagName('html')[0].innerHTML| (from inside web browser automation tools like Selenium, etc.), and then use that as the source code for our URL.
 		
 		Since this would add unnecessary bulk and complexity to our application, we chose not to do it, and thus, we consider this to be a limitation.
+		
 		\item Blogs powered by WordPress/Drupal\\
-		In addition to what was discussed in Section \ref{issues:cms}, we found that certain WordPress plugins also prevent the E-Mail Header Injection attack by sanitizing user input on Contact Forms. Some of these are discussed in the following section.
+        In addition to what was discussed in Section \ref{issues:cms}, we found that certain WordPress `plugins' also prevent the E-Mail Header Injection attack by sanitizing user input on Contact Forms. Some of these plugins are discussed in the following section. Although not all websites built with WordPress are secure from the attack, between the presence of the plugins on some websites, and getting tagged as `spambots' by others, we were able to do vulnerability analysis on very few sites powered by WordPress.
 		
 		\item Blacklisting by websites and ISPs\\
-		During the actual crawl, we ended up getting blacklisted by a few websites, and Internet Service Providers (ISPs). We then had to create up a blacklist of our own to ensure that we did not inject these websites.
+        During the actual crawl, we ended up getting blacklisted by a few websites (mostly WordPress ones), and Internet Service Providers (ISPs). We then had to create up a blacklist of our own to ensure that we did not inject these websites. The result was that we could not gather any data about these websites.
 		
 		\item E-Mail libraries\\
         E-Mail libraries like the PHP Extension and Application Repository's (PEAR) Mail Library provide inbuilt sanitization checks for user input. While this is technically not a limitation of our project, it still makes it such that we are not able to inject these sites successfully, and that is enough to justify its inclusion in the limitations section.
