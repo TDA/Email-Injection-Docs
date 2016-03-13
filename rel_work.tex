@@ -1,11 +1,11 @@
 \chapter{Related Work}
-This will be a detailed section on the papers that are related to our work, *but* important thing is to show why our work is different from prior work in this area.
-Also, can/will add references to the blogs and books that describe this attack :)
 
 There are different approaches to finding vulnerabilities in web applications, two of them being Black-Box testing and White-Box testing.
 Our work is based on the black-box testing approach to finding vulnerabilities on websites, and there has been plenty of research that has made use of this methodology (\cite{Beizer:1995:BTT:202699}, \cite{Huang}, \cite{zanero2005automatic}, \cite{kals2006secubat}, \cite{payet13:ears-in-the-wild} etc.). There has been significant discussion on both the benefits of such an approach (\cite{black-box}) and its shortcomings (\cite{Doupe2010}, \cite{Doupe2012}).
 
 Our work does not intend to act as an `everything and the kitchen sink' vulnerability scanner, but as a means to identify the presence of E-Mail Header Injection Vulnerability in a given web application. In this sense, since we are injecting payloads into the web application, our work is related to other injection based attacks, such as SQL Injection (\cite{sql0}, \cite{sql1}, \cite{sql2}), Cross-Site Scripting --- XSS --- (\cite{Injection1}, \cite{KleinAmit}), HTTP Header Injection (\cite{sessionride}), and is very closely related to Simple Mail Transfer Protocol (SMTP) Injection (\cite{Terada2015}).
 
-As specified before, although this vulnerability has been present for over a decade, there has not been much written about it in the literature. 
-//describe in detail Teradas work and why it is similar to but different from ours
+The attack described by \cite{Terada2015} is one that attacks the underlying SMTP mail servers by injecting SMTP commands (which are closely related to E-Mail Headers and usually have a one-to-one mapping) to exploit the SMTP server's pipelining mechanism. The paper also describes proof-of-concept attacks against certain Mailing libraries. This attack, although trying to achieve a similar result, is distinctly different from ours. 
+
+As specified before, although this vulnerability has been present for over a decade, there has not been much written about it in the literature, and we are left with a bunch of articles on the internet.
+//describe in detail Terada's work and why it is similar to but different from ours
