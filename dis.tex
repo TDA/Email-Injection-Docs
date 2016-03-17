@@ -1,5 +1,5 @@
 \documentclass[12pt,letterpaper]{report}
-\usepackage{natbib}
+\usepackage[square,numbers]{natbib}
 \usepackage{geometry}
 \usepackage{fancyhdr}
 \usepackage{afterpage}
@@ -9,12 +9,16 @@
 \usepackage{tocloft}
 \usepackage{asudis}
 %% These are for including code
+%% and for upquotes
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
 \usepackage{listings}
 \usepackage{comment}
 \usepackage{color}
 \usepackage{dirtytalk} % for quotations
 \usepackage[justification=centering]{caption}
 \usepackage[pageanchor=true,plainpages=false,pdfpagelabels,bookmarks,bookmarksnumbered]{hyperref}
+
 
 % for footnotes in tables
 \usepackage{tablefootnote}
@@ -35,8 +39,11 @@
 	numbersep=5pt,
 	numberstyle=\tiny\color{mygray},
 	rulecolor=\color{black},
-	showstringspaces=false
-	}
+	showstringspaces=false,
+	upquote=true
+}
+	
+\newcommand{\dq}[1]{``{#1}''}
 
 \begin{document}
 %-----------------------front matter

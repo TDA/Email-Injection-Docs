@@ -5,7 +5,7 @@ This section expands on the brief overview given in the previous section \ref{sy
 
 \subsection{Crawler}
 \label{Comp:Crawler}
-We used an open-source Apache Nutch based Crawler built at the University of California - Santa Barbara. The Crawler provides us with a continuous feed of URLs and the HTML contained in those pages. This feed is tunneled to our Form Parser over a Celery Queue.
+We used an open-source Apache Nutch based Crawler. The Crawler provides us with a continuous feed of URLs and the HTML contained in those pages. This feed is tunneled to our Form Parser over a Celery Queue.
 
 \subsection{Form Parser}
 \label{Comp:FP}
@@ -44,12 +44,12 @@ The Fuzzer forms the heart of the system and is the only component that interact
 The two different types of payloads we use for fuzzing are,
 \paragraph{Non-Malicious Payload}
 \label{Comp:Fuzzer:nmp}
-The regular or non-malicious payload is a straight forward E-Mail address of the format -- `reguser(xxxxx)@wackopicko.com', where `xxxxx' is replaced by the \lstinline{`form_id'}, so as to create a one-to-one mapping of the payloads to the forms.
+The regular or non-malicious payload is a straight forward E-Mail address of the format -- `reguser(xxxxx)@example.com', where `xxxxx' is replaced by the \lstinline{`form_id'}, so as to create a one-to-one mapping of the payloads to the forms, and `example.com' is replaced by the required domain. In our case, this domain is `wackopicko.com'.
 This non-malicious payload allows us to check whether we can inject data into a form and whether we can overcome the `anti-bot' measures on the given website.
 
 \paragraph{Malicious Payload}
 \label{Comp:Fuzzer:mp}
-In the malicious payload scenario, we inject the fields with the `bcc' - \lstinline{blind carbon copy} element. If the vulnerability is present, this will cause the server to send us a copy of the E-Mail to the E-Mail address we added as part of the `bcc` field.
+In the malicious payload scenario, we inject the fields with the `bcc' - \lstinline{blind carbon copy} element. If the vulnerability is present, this will cause the server to send us a copy of the E-Mail to the E-Mail address we added as part of the `bcc' field.
 The malicious payloads consist of 4 different payloads. Each of these payloads is crafted for a particular use case. The four payloads are:
 \begin{enumerate}
 	\item
@@ -78,7 +78,7 @@ The `xxxx' in the above payloads is replaced by the \lstinline{`form_id'}, so as
 		4 & Python & Windows\\
 		\hline
 	\end{tabular}
-	\caption{Payload Coverage}
+	\caption{Payload Coverage.}
 	\label{tab:payloadcov}
 \end{table}
 Along with the payload, the Fuzzer also has to inject data into the other fields of the form. This data also has to pass validation constraints on the individual input fields e.g.\ for a name field, numbers might not be allowed. It is essential that the data we inject into the input fields adhere to the constraints. Our Fuzzer does this by making use of a `Data Dictionary' which has predefined `keys' and `values' for standard input fields such as name, date, username, password, text, etc. The default values for these are generated on-the-fly for each form, based on generally followed guidelines for such fields. e.g.\ password fields should consist of at least one uppercase letter, one lowercase letter, and a special character.
@@ -112,20 +112,20 @@ We collect and store as much data as possible at each stage of the pipeline. Thi
 	\item The data is used to validate our findings.
 	\item The data collected can be used for other research projects in this area.
 \end{enumerate}
-Each table in our database is listed in Table. \ref{tab:dbtf} along with the data it is designed to hold. A schema of the database is shown in Figure. \ref{fig:dbschema}.
+Each table in our database is listed in Table~\ref{tab:dbtf} along with the data it is designed to hold. A schema of the database is shown in Figure~\ref{fig:dbschema}.
 
 
 \begin{table}[!htbp]
 	\centering
 	\input{System/tables}        
-	\caption{Database - Tables}
+	\caption{Database - Tables.}
 	\label{tab:dbtf}
 \end{table}
 
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=15cm, height=11cm]{System/dbschema}
-	\caption{Database Schema}
+	\caption{Database Schema.}
 	\label{fig:dbschema}
 \end{figure}
 
