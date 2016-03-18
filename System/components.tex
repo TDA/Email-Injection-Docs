@@ -78,7 +78,7 @@ The `xxxx' in the above payloads is replaced by the \lstinline{`form_id'}, so as
 		4 & Python & Windows\\
 		\hline
 	\end{tabular}
-	\caption{Payload Coverage.}
+	\caption{Payload coverage, each payload covers a different platform/language.}
 	\label{tab:payloadcov}
 \end{table}
 Along with the payload, the Fuzzer also has to inject data into the other fields of the form. This data also has to pass validation constraints on the individual input fields e.g.\ for a name field, numbers might not be allowed. It is essential that the data we inject into the input fields adhere to the constraints. Our Fuzzer does this by making use of a `Data Dictionary' which has predefined `keys' and `values' for standard input fields such as name, date, username, password, text, etc. The default values for these are generated on-the-fly for each form, based on generally followed guidelines for such fields. e.g.\ password fields should consist of at least one uppercase letter, one lowercase letter, and a special character.
@@ -118,14 +118,14 @@ Each table in our database is listed in Table~\ref{tab:dbtf} along with the data
 \begin{table}[!htbp]
 	\centering
 	\input{System/tables}        
-	\caption{Database - Tables.}
+	\caption{The different tables in our database.}
 	\label{tab:dbtf}
 \end{table}
 
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=15cm, height=11cm]{System/dbschema}
-	\caption{Database Schema.}
+	\caption{Database schema.}
 	\label{fig:dbschema}
 \end{figure}
 
