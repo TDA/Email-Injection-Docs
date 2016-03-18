@@ -6,7 +6,7 @@ This section will describe the issues we faced with the design decisions we made
 	\item \label{issues:fpr}False Positive rate for the E-Mail Field Checker\\
 	As discussed in Section \ref{Comp:EMFC}, we only search for the words `email', `mail' or `e-mail' (case insensitive) inside the forms to detect the presence of E-Mail fields, instead of searching for an \colorbox{lightgray}{\lstinline{<input type = email>}}. This might result in a false positive in certain forms, like the one shown in Listing. \ref{code:false_positive}.
 	
-	\lstset{language=HTML,caption={E-Mail Field Checker - False Positives},label={code:false_positive}}
+	\lstset{language=HTML,caption={E-Mail field checker - false positives, the system\\incorrectly classifies this as an email form.},label={code:false_positive}}
 	\begin{lstlisting}
 	<form method="post">
 	E-Mail us if you have any questions!!
@@ -39,11 +39,10 @@ This section will describe the issues we faced with the design decisions we made
 	\end{itemize}
 	Also, relative URLs pose another problem. If the URL of the form page ends with `/' and the `action' specifies a path starting with `/' (illustrated in Listing \ref{issues:url}), we would need to strip one of the two slashes. This increases the overall complexity of our URL generator, as we have to account for all these possibilities.
 		
-	\lstset{language=HTML,caption={Issues - URL Construction},label={issues:url}}
+	\lstset{language=HTML,caption={URL construction, the resulting url needs to be www.website.com/mail.php and not www.website.com//mail.php},label={issues:url}}
 	\begin{lstlisting}
 	Current URL = www.website.com/
 	<form action=/mail.php>
-	Resulting URL = www.website.com/mail.php and NOT www.website.com//mail.php
 	\end{lstlisting}
 	
 	We chose to go with a best-effort approach to this problem, where our system covers all these possibilities, however, we cannot know for certain whether this works for other unforeseen ways of specifying a URL.
