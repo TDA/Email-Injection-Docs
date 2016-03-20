@@ -6,7 +6,7 @@ This section will describe the issues we faced with the design decisions we made
 	\item \label{issues:fpr}False Positive rate for the E-Mail Field Checker\\
 	As discussed in Section \ref{Comp:EMFC}, we only search for the words `email', `mail' or `e-mail' (case insensitive) inside the forms to detect the presence of E-Mail fields, instead of searching for an \colorbox{lightgray}{\lstinline{<input type = email>}}. This might result in a false positive in certain forms, like the one shown in Listing. \ref{code:false_positive}.
 	
-	\lstset{language=HTML,caption={E-Mail field checker - false positives, the system\\incorrectly classifies this as an email form.},label={code:false_positive}}
+	\lstset{language=HTML,caption={E-Mail field checker - false positives, the system\\incorrectly classifies this as an e-mail form.},label={code:false_positive}}
 	\begin{lstlisting}
 	<form method="post">
 	E-Mail us if you have any questions!!
