@@ -17,7 +17,6 @@ This section will describe the issues we faced with the design decisions we made
 	
 	The word `E-Mail' on Line 2 will result in our system classifying this form as a potential E-Mail form, while it clearly is not. However, as we will see, this is not really a big issue, as despite being added to the \lstinline{`email_forms'} table, this form will never be injected in the `fuzzer' due to the absence of the appropriate input field in the form. We chose to go with this design, as it allows us to detect \emph{every} form that provides the capability to send or receive E-Mail, and it lets us do so in a very fast and inexpensive way.
 	
-	
 	\item Parallelism for the system\\
 	\label{issues:parallel}
 	Every component in the pipeline benefits hugely from parallel processing of the data. However, Python's GIL (Global Interpreter Lock) does not allow the running of multiple native threads concurrently. To overcome this, we used a Celery task queue (discussed in Section \ref{exp:Celery}), which allowed a fair level of parallelism that vanilla Python does not provide by default. Even though this makes the system faster than a single-threaded approach, it still leaves room for improvement in terms of speed. Despite the obvious speed drop, we chose to go with Python, for the raw power it provides, its text processing capabilities, PCRE (Perl Compatible Regular Expressions) compatibility, and the numerous libraries for HTML Parsing, HTTP request generation, etc.
@@ -48,7 +47,7 @@ This section will describe the issues we faced with the design decisions we made
 	We chose to go with a best-effort approach to this problem, where our system covers all these possibilities, however, we cannot know for certain whether this works for other unforeseen ways of specifying a URL.
 	
 	\item Black-box Testing\\
-	The approach that we have selected --- Black-box testing --- is highly beneficial as explained in Section \ref{sys:appr}. However, it also has a drawback in that we cannot verify whether the reported vulnerability exists in the source code, or is a feature of the website. We have to manually E-Mail the developers to get this feedback.
+	The approach that we have selected --- Black-box testing --- is highly beneficial as explained in Section \ref{sys:appr}. However, it also has a drawback in that we cannot verify whether the reported vulnerability exists in the source code, or is a feature of the website. We have to manually E-Mail the developers to get this kind of feedback.
 	
 	\item Mapping responses to requests\\
 	Since we are generating multiple payloads for each form, and the received E-Mail may not contain the name of the domain from which we received the E-Mail, it is difficult to map the response E-Mails to the right requests. We instead use the \lstinline{`form_id'} as part of the payload to reduce the difficulty in mapping responses to requests.

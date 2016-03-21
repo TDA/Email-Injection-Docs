@@ -1,8 +1,7 @@
-\section{Test Plan}
+\section{Test Suite}
 \label{Arch:Test}
 The test plan for our system includes a set of unit tests for each module in the pipeline. Further, we have unit tests for every %every instead of each
-individual function in the modules. The functions are tested separately, using mocks and stubs, so as to ensure isolated testing. Further, we have unit tests for each function in the modules.
-
+individual function in the modules. The functions are tested separately, using mocks and stubs, so as to ensure isolated testing.
 This section outlines the test plan in the following manner. We list the modules that are tested, and then describe what each unit test tests for.
 \begin{itemize}
 	\item Form Parser
@@ -15,9 +14,7 @@ This section outlines the test plan in the following manner. We list the modules
 	\item E-Mail Field Checker
 	\begin{itemize}
 		\item \colorbox{lightgray}{\lstinline{test_check_for_email}} - Tests whether the system finds E-Mail fields in the form when the words `e-mail' or `email' are present in the form (case insensitive).
-		
 		\item \colorbox{lightgray}{\lstinline{test_check_for_no_email}} - Tests whether the system finds no E-Mail fields when the words `e-mail' or `email' are \emph{not} present in the form (case insensitive).
-		\item
 	\end{itemize}
 	
 	\item E-Mail Form Retriever
