@@ -50,14 +50,17 @@ This non-malicious payload allows us to check whether we can inject data into a 
 \paragraph{Malicious Payload}
 \label{Comp:Fuzzer:mp}
 In the malicious payload scenario, we inject the fields with the `bcc' - \lstinline{blind carbon copy} element. If the vulnerability is present, this will cause the server to send us a copy of the E-Mail to the E-Mail address we added as part of the `bcc' field.
+
+A special case is to be considered here: the addition of the `x-check:in' header field to the payloads. This is due to Python's exhibited behavior when attaching
+headers. Instead of overwriting a header if it is already present, it ignores duplicate headers. So, in case the `bcc' field is already present as part of the headers, our injected `bcc' header would be ignored. In order to overcome this, we need to inject a new header that has not been seen before. Hence, we inject our own `x-dummy-header' to ensure we can get results if the injection was successful.
+
 The malicious payloads consist of 4 different payloads. Each of these payloads is crafted for a particular use case. The four payloads are:
 \begin{enumerate}
 	\item
 	%inside the lstinline, we need to use \\ for \textbackslash
 	\colorbox{lightgray}{\lstinline{nuser(xxxx)@wackopicko.com\\nbcc:maluser(xxxx)@wackopicko.com}} - This is the most minimal payload, it injects a `newline' character followed by the `bcc' field.
 	\item \colorbox{lightgray}{\lstinline{nuser(xxxx)@wackopicko.com\\r\\nbcc:maluser(xxxx)@wackopicko.com}} - This payload is added for purposes of cross-platform fuzzing (ie) `\textbackslash{}r\textbackslash{}n' is the `Carriage Return - New Line (CRLF)' used on Windows systems. 
-	\item \colorbox{lightgray}{\lstinline{nuser(xxxx)@wackopicko.com\\nbcc:maluser(xxxx)@wackopicko.com\\nx-check:in}} - The addition of the `x-check:in' header field to the payload is due to Python's exhibited behavior when attaching
-	headers. Instead of overwriting a header if it is present, it ignores duplicate headers. So, in case the `bcc' field is already present as part of the headers, our injected `bcc' header would be ignored. In order to overcome this, we need to inject a new header that has not been seen before. Hence, we inject our own `x-dummy-header' to ensure we can get results if the injection was successful.
+	\item \colorbox{lightgray}{\lstinline{nuser(xxxx)@wackopicko.com\\nbcc:maluser(xxxx)@wackopicko.com\\nx-check:in}} - As discussed above, the addition of the 'x-check- header is to inject Python based websites.
 	\item \colorbox{lightgray}{\lstinline{nuser(xxxx)@wackopicko.com\\r\\nbcc:maluser(xxxx)@wackopicko.com\\r\\nx-check:in}} - Same as previous payload, but containing the additional `\textbackslash{}r' for Windows compatibility.
 	
 \end{enumerate}
