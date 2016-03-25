@@ -1,10 +1,6 @@
 \begin{abstract}
 	E-mail header injection vulnerability is a class of vulnerability that has been around for a long time but has not made its way to popular literature. It can be considered as the e-mail equivalent of HTTP Header Injection Vulnerability. Email injection is possible when the mailing script fails to check for the presence of e-mail headers in the form fields that take in e-mail addresses. The vulnerability exists in the reference implementation of the built-in “mail” functionality in popular languages like PHP, Java, Python, and Ruby\@. With the proper injection string, this vulnerability can be exploited to inject additional headers and/or modify existing headers in an E-mail message.
 	\paragraph{}
-	To understand and quantify the prevalence of E-Mail Header Injection vulnerabilities, we used a black-box testing approach, where we crawled {'x'} % need to fill
-	URLs in order to find the URLs which contained form fields. Our system used this data feed to classify the forms which had e-mail fields which could be fuzzed with malicious payloads. Amongst the {'s'} % need to fill
-	forms fuzzed, our system  was able to find {'y'} % need to fill
-	 vulnerable URLs among {'z'} domains, which proves that the threat {is/isn't} % need to edit
-	 widespread {and deserves future research attention.} % need to edit
+	This thesis serves to understand and quantify the prevalence of E-Mail Header Injection vulnerabilities. Using a black-box testing approach, we crawled \urls\ URLs in order to find the URLs which contained form fields. We found \forms\ such forms, out of which \emailforms\ forms contained e-mail fields. Our system used this data feed to classify which of these forms could be fuzzed with malicious payloads. Amongst the \fuzzed\ forms tested, \recd\ forms were fuzzable, and our system was able to find \success\ vulnerable URLs across \domains\ domains, which proves that the threat is widespread and deserves future research attention.
 
 \end{abstract}
