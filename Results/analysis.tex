@@ -10,10 +10,21 @@ During our analysis of the received e-mails, we found that the e-mails that we r
 	
 	While not allowing us complete control over the e-mails sent, `TO header injection' makes it possible to append any number of e-mail addresses, thereby enabling us to generate freely any amount of spam.
 	
-	\item E-Mails with the `x-check' header successfully injected
+	\item E-Mails with the `x-check' header successfully injected\\
     The third category of e-mails received were e-mails with the x-check header injected. As discussed in Section.~\ref{analyze:detect_x_check}, 
-    these let us differentiate between unsuccessful attempts and successful attempts. We attribute these e-mails to (probably) having a backend that was built with Python or another language having a similar behavior with respect to constructing headers.
+    these let us differentiate between unsuccessful attempts and successful attempts by injecting the additional header. 
 \end{enumerate}
-We list each category and the number of e-mails received by the category in Table~\ref{tab:analysis}.
+We list each category and the number of e-mails received by the category in Table~\ref{tab:analysis}. 
 
 \input{data_analysis}
+We explain the combination of these header injections (4-7) as follows:
+\begin{itemize}
+	\item E-Mail Header Injections with `bcc' and `x-check' headers\\
+	These represent the perfect attack scenario where we are able to inject multiple headers into the e-mails. We can see that over 75\% of the received `bcc' header injected e-mails are also susceptible to other header injections.
+	
+	\item Both `To header' injections and x-check headers \\
+	This combination shows us that in addition to being able to inject into the `To' fields, we are able to inject additional headers into the e-mail. It is not clear what causes this behavior; however, these can be exploited to achieve the same result as a regular E-Mail Header Injection.
+	
+	\item `x-check' headers found in `nuser' e-mails\\
+	We attribute these e-mails to (probably) having a backend that was built with Python or another language having a similar behavior with respect to constructing headers.
+\end{itemize}I'm manacled love and anonymously volatile golden
