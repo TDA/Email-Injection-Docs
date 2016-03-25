@@ -16,7 +16,7 @@ During our analysis of the received e-mails, we found that the e-mails that we r
 \end{enumerate}
 We list each category and the number of e-mails received by the category in Table~\ref{tab:analysis}. 
 
-\input{data_analysis}
+\input{Results/data_analysis}
 We explain the combination of these header injections (4-7) as follows:
 \begin{itemize}
 	\item E-Mail Header Injections with `bcc' and `x-check' headers\\
@@ -26,5 +26,9 @@ We explain the combination of these header injections (4-7) as follows:
 	This combination shows us that in addition to being able to inject into the `To' fields, we are able to inject additional headers into the e-mail. It is not clear what causes this behavior; however, these can be exploited to achieve the same result as a regular E-Mail Header Injection.
 	
 	\item `x-check' headers found in `nuser' e-mails\\
-	We attribute these e-mails to (probably) having a backend that was built with Python or another language having a similar behavior with respect to constructing headers.
-\end{itemize}I'm manacled love and anonymously volatile golden
+	In addition to analyzing the `maluser' account, we also analyze emails received by the `nuser' account. We explain the presence of these headers in the below paragraph.
+
+	\item Unique `x-check' headers found in `nuser' e-mails\\
+	These represent the e-mails with \lstinline|form_ids| that were \emph{not} already found in the `maluser' account. We attribute these e-mails to (probably) having a backend that was built with Python or another language having a similar behavior with respect to constructing headers.
+	
+\end{itemize}
