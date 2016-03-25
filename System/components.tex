@@ -102,6 +102,7 @@ To find this, we read through each received E-Mail, and check whether \emph{any}
 \subparagraph{Detecting injected bcc headers}
 As discussed in the payloads section (\ref{Comp:Fuzzer:mp}), the payloads were crafted in such a way that the E-Mails received by `maluser' account directly indicate the presence of the injected `bcc' field. Thus, we simply parse the E-Mails and store them in the Database.
 
+\label{analyze:detect_x_check}
 \subparagraph{Detecting injected x-check headers}
 E-Mails not received by the `maluser' account but by the `nuser' account constitute a special category of E-Mails.
 These E-Mails could have been generated due to two reasons:
