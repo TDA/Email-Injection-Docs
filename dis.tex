@@ -23,6 +23,9 @@
 % for footnotes in tables
 \usepackage{tablefootnote}
 
+% for arithmetic
+\usepackage{xintexpr}
+
 \definecolor{mygray}{rgb}{0.6,0.6,0.6}
 \definecolor{lightgray}{rgb}{0.92,0.92,0.92}
 \definecolor{darkgreen}{rgb}{0,0.7,0}
@@ -45,16 +48,31 @@
 	
 \newcommand{\dq}[1]{``{#1}''}
 %% THIS IS THE DATA FOR OUR THESIS, UPDATING HERE WILL UPDATE EVERYWHERE %%
-\newcommand{\urls}{13,467,548}
-\newcommand{\forms}{3,725,106}\newcommand{\formsDelta}{27.66\%}
-\newcommand{\emailforms}{581,435}\newcommand{\emailformsDelta}{15.61\%}
-\newcommand{\fuzzed}{412,623}\newcommand{\fuzzedDelta}{70.97\%}
-\newcommand{\recd}{31,666}\newcommand{\recdDelta}{7.67\%}
-\newcommand{\malfuzzed}{27,430}\newcommand{\malfuzzedDelta}{86.62\%}
-\newcommand{\success}{289}\newcommand{\successDelta}{1.05\%}
-\newcommand{\domains}{124}
-\newcommand{\uniqueforms}{512,480}
-\newcommand{\uniqueemailforms}{113,663}
+\newcommand{\urls}{14,356,141}
+
+\newcommand{\forms}{4,046,679}
+\newcommand{\formsDelta}{28.19\%}
+
+\newcommand{\emailforms}{641,418}
+\newcommand{\emailformsDelta}{15.85\%}
+
+\newcommand{\fuzzed}{519,251}
+\newcommand{\fuzzedDelta}{80.95\%}
+
+\newcommand{\recd}{42,588}
+\newcommand{\recdDelta}{8.20\%}
+
+\newcommand{\malfuzzed}{37,121}
+\newcommand{\malfuzzedDelta}{87.16\%}
+
+\newcommand{\success}{414}
+\newcommand{\successDelta}{1.12\%}
+
+\newcommand{\domains}{182}
+
+% these refer to unique domains, not unique forms
+\newcommand{\uniqueforms}{650,394}
+\newcommand{\uniqueemailforms}{151,795}
 
 \begin{document}
 %-----------------------front matter
