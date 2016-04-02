@@ -24,7 +24,7 @@ The E-Mail Field  Checker script is the final stage in the `Data Gathering' pipe
 
 The E-Mail Field Checker particularly searches for the words `e-mail', `mail' or `email' within the form, instead of an explicit e-mail field (ie) \colorbox{lightgray}{\lstinline{<input type="email">}}. This is by design, taking into account a very common design pattern used by web designers, where they may have a text field with an id or name set to `email', instead of an actual E-Mail field, for purposes of backward compatibility with older browsers.
 
-Compared to searching for explicit E-Mail fields, by searching for the presence of the words `e-mail', `mail' or `email' in the form, not only are we assured zero false negatives --- as our system is bound to find an E-Mail field if it is present --- but the system is also substantially faster as we do not have to parse the individual form fields at this point in the pipeline. However, this might lead to a low false positive rate. We discuss this possibility in Section \ref*{issues:fpr} - Design Issues. 
+Compared to searching for explicit E-Mail fields, by searching for the presence of the words `e-mail', `mail' or `email' in the form, not only are we assured zero false negatives --- as our system is bound to find an E-Mail field if it is present --- but the system is also substantially faster as we do not have to parse the individual form fields at this point in the pipeline. However, this might lead to a low false positive rate. We discuss this possibility in detail in Section \ref*{issues:fpr} - Design Issues. 
 
 The output of this stage is stored in the Database for persistence and acts as the input to the `Payload Injection' pipeline.
 
