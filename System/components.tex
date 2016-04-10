@@ -20,11 +20,11 @@ The Form Parser stores all this data in our Databases, so as to allow us to reco
 
 \subsection{E-Mail Field Checker}
 \label{Comp:EMFC}
-The E-Mail Field  Checker script is the final stage in the `Data Gathering' pipeline. It receives the output of the previous stage --- Form Data from the queue --- and checks for the presence of E-Mail fields in those forms. If any E-Mail fields are found, it stores references to these forms in a separate table. This allows us to separate the forms that are potentially vulnerable from the forms that are not.
+The E-Mail Field Checker script is the final stage in the `Data Gathering' pipeline. It receives the output of the previous stage --- Form Data from the queue --- and checks for the presence of E-Mail fields in those forms. If any e-mail fields are found, it stores references to these forms in a separate table. This allows us to separate the forms that are potentially vulnerable from the forms that are not.
 
 The E-Mail Field Checker particularly searches for the words `e-mail', `mail' or `email' within the form, instead of an explicit e-mail field (ie) \colorbox{lightgray}{\lstinline{<input type="email">}}. This is by design, taking into account a very common design pattern used by web designers, where they may have a text field with an id or name set to `email', instead of an actual E-Mail field, for purposes of backward compatibility with older browsers.
 
-Compared to searching for explicit E-Mail fields, by searching for the presence of the words `e-mail', `mail' or `email' in the form, not only are we assured zero false negatives --- as our system is bound to find an E-Mail field if it is present --- but the system is also substantially faster as we do not have to parse the individual form fields at this point in the pipeline. However, this might lead to a low false positive rate. We discuss this possibility in detail in Section \ref*{issues:fpr} - Design Issues. 
+Compared to searching for explicit e-mail fields, by searching for the presence of the words `e-mail', `mail' or `email' in the form, not only are we assured zero false negatives --- as our system is bound to find an E-Mail field if it is present --- but the system is also substantially faster as we do not have to parse the individual form fields at this point in the pipeline. However, this might lead to a low false positive rate. We discuss this possibility in detail in Section \ref*{issues:fpr} - Design Issues. 
 
 The output of this stage is stored in the Database for persistence and acts as the input to the `Payload Injection' pipeline.
 
@@ -49,7 +49,7 @@ This non-malicious payload allows us to check whether we can inject data into a 
 
 \paragraph{Malicious Payload}
 \label{Comp:Fuzzer:mp}
-In the malicious payload scenario, we inject the fields with the `bcc' - \lstinline{blind carbon copy} element. If the vulnerability is present, this will cause the server to send us a copy of the E-Mail to the E-Mail address we added as part of the `bcc' field.
+In the malicious payload scenario, we inject the fields with the `bcc' - \lstinline{blind carbon copy} element. If the vulnerability is present, this will cause the server to send us a copy of the e-mail to the e-mail address we added as part of the `bcc' field.
 
 A special case is to be considered here: the addition of the `x-check:in' header field to the payloads. This is due to Python's exhibited behavior when attaching
 headers. Instead of overwriting a header if it is already present, it ignores duplicate headers. So, in case the `bcc' field is already present as part of the headers, our injected `bcc' header would be ignored. In order to overcome this, we need to inject a new header that has not been seen before. Hence, we inject our own `x-dummy-header' to ensure we can get results if the injection was successful.
@@ -91,24 +91,24 @@ Once the data (including the payload) for the form is ready, the Fuzzer construc
 
 \subsection{E-Mail Analyzer}
 \label{Comp:EMA}
-The E-Mail Analyzer checks for the presence of injected data in the received E-Mails. This module works on the E-Mails received and stored by our Postfix server, and depending on the user who received the E-Mail, it performs different functions. This is outlined below:
+The E-Mail Analyzer checks for the presence of injected data in the received e-mails. This module works on the e-mails received and stored by our Postfix server, and depending on the user who received the e-mail, it performs different functions. This is outlined below:
 \paragraph{Analyzing Regular E-Mail}
-`Regular E-Mail' refers to the E-Mails received by the \colorbox{lightgray}{\lstinline{reguser(xxxx)@wackopicko.com}} --- where xxxx is the \lstinline{form_id} --- that were sent due to injecting the `regular or non-malicious' payload (discussed in Section. \ref{Comp:Fuzzer:nmp}). The objective of the analysis on this E-Mail is to figure out whether the input fields that we injected with data appear on the resulting E-Mail, and if so, which fields appear where.
+`Regular E-Mail' refers to the e-mails received by the \colorbox{lightgray}{\lstinline{reguser(xxxx)@wackopicko.com}} --- where xxxx is the \lstinline{form_id} --- that were sent due to injecting the `regular or non-malicious' payload (discussed in Section. \ref{Comp:Fuzzer:nmp}). The objective of the analysis on this e-mail is to figure out whether the input fields that we injected with data appear on the resulting e-mail, and if so, which fields appear where.
 
-To find this, we read through each received E-Mail, and check whether \emph{any} of the fields we injected with data appear as part of either the headers or the body of the E-Mail. If they do, we add them to the list of fields that can potentially result in an E-Mail Header Injection for the given E-Mail. We then pass on this information back to the Fuzzer pipeline, along with the \lstinline{form_id}, so that the Fuzzer can now inject the malicious payloads into the same form, completing the pipeline.
+To find this, we read through each received e-mail, and check whether \emph{any} of the fields we injected with data appear as part of either the headers or the body of the E-Mail. If they do, we add them to the list of fields that can potentially result in an E-Mail Header Injection for the given E-Mail. We then pass on this information back to the Fuzzer pipeline, along with the \lstinline{form_id}, so that the Fuzzer can now inject the malicious payloads into the same form, completing the pipeline.
 
 \paragraph{Analyzing E-Mail with payloads}
-`E-Mail with payloads' refer to E-Mails received by either the \colorbox{lightgray}{\lstinline{nuser(xxxx)@wackopicko.com}} or \colorbox{lightgray}{\lstinline{maluser(xxxx)@wackopicko.com}} accounts. These E-Mails were received due to injecting the malicious payloads that were discussed in Section. \ref{Comp:Fuzzer:mp}. Analysis of these E-Mails is considerably simpler than that of the regular E-Mails. This is due to the fact that this involves lesser processing of the contents of the E-Mail compared to the previous section.
+`E-Mail with payloads' refer to e-mails received by either the \colorbox{lightgray}{\lstinline{nuser(xxxx)@wackopicko.com}} or \colorbox{lightgray}{\lstinline{maluser(xxxx)@wackopicko.com}} accounts. These e-mails were received due to injecting the malicious payloads that were discussed in Section. \ref{Comp:Fuzzer:mp}. Analysis of these e-mails is considerably simpler than that of the regular e-mails. This is due to the fact that this involves lesser processing of the contents of the e-mail compared to the previous section.
 \subparagraph{Detecting injected bcc headers}
-As discussed in the payloads section (\ref{Comp:Fuzzer:mp}), the payloads were crafted in such a way that the E-Mails received by `maluser' account directly indicate the presence of the injected `bcc' field. Thus, we simply parse the E-Mails and store them in the Database.
+As discussed in the payloads section (\ref{Comp:Fuzzer:mp}), the payloads were crafted in such a way that the e-mails received by `maluser' account directly indicate the presence of the injected `bcc' field. Thus, we simply parse the E-Mails and store them in the Database.
 
 \label{analyze:detect_x_check}
 \subparagraph{Detecting injected x-check headers}
-E-Mails not received by the `maluser' account but by the `nuser' account constitute a special category of E-Mails.
-These E-Mails could have been generated due to two reasons:
+E-Mails not received by the `maluser' account but by the `nuser' account constitute a special category of e-mails.
+These e-mails could have been generated due to two reasons:
 \begin{enumerate}
-	\item The websites performed some sanitization routines and stripped out the `bcc' part of the payload, thereby sending E-Mails only to the `nuser' account. These E-Mails then act as proof that the vulnerability was not found on the given website.
-	\item A more conducive scenario for us is when the `bcc' header was ignored for some reason, e.g.\ Python's default behavior when it encounters duplicate headers. In this case, we check whether the E-Mail contains the custom header `x-check'. If it does, then this is a successful attack as well, and we store it in the Database.
+	\item The websites performed some sanitization routines and stripped out the `bcc' part of the payload, thereby sending e-mails only to the `nuser' account. These e-mails then act as proof that the vulnerability was not found on the given website.
+	\item A more conducive scenario for us is when the `bcc' header was ignored for some reason, e.g.\ Python's default behavior when it encounters duplicate headers. In this case, we check whether the e-mail contains the custom header `x-check'. If it does, then this is a successful attack as well, and we store it in the Database.
 \end{enumerate}
 \subsection{Database}
 We collect and store as much data as possible at each stage of the pipeline. This is due to the two following reasons:
