@@ -31,4 +31,7 @@ We explain the combination of these header injections (4-7) as follows:
 	\item Unique `x-check' headers found in `nuser' e-mails\\
 	These represent the e-mails with \lstinline|form_ids| that were \emph{not} already found in the `maluser' account. We attribute these e-mails to (probably) having a backend that was built with Python or another language having a similar behavior with respect to constructing headers.
 	
+	\item Total successful injections\\
+	This represents the total number of successful injections our system made. This includes the \dq{E-Mail Header Injections with `bcc' header}\,(1), \dq{`To header' injections alone}\,(3), and \dq{Unique `x-check' headers found in `nuser' e-mails}\,(7). This is the total number of vulnerabilities that we found.
+	
 \end{itemize}
