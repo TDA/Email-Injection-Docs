@@ -5,7 +5,8 @@ $subject = "Hello Sai Pc";
 $message = "We need you to reset your password";
 $to = "schand31@asu.edu";
 
-// attack string => 'sai@sai.com\nBCC:spc@spc.com'
+// example attack string to be injected as the value for
+// $_REQUEST['email'] => 'sai@sai.com\nCC:spc@spc.com'
 $retValue = mail($to, $subject, $message, "From: $from");
-// E-Mail gets sent to both sai@sai.com AND spc@spc.com
+// E-Mail gets sent to both schand31@asu.edu AND spc@spc.com
 \end{lstlisting}
