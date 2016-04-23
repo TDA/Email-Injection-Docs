@@ -1,32 +1,9 @@
 \section{Potential Impact}
 
 The impact of the vulnerability can be pretty far-reaching.
-Table~\ref{tab:usage} shows the current Server side language usage statistics on the Web, compiled from \cite{W3techs}. 
-PHP, Java, Python and Ruby (combined) account for over 85\%\footnote{Note: a website may use more than one server-side programming language} of the websites in existence. The vulnerability can be exploited to do potentially any of the following:
+Table~\ref{tab:usage} shows the current server-side language usage statistics on the Web \cite{W3techs}. 
 
-
-\begin{itemize}
-	\item Phishing and Spoofing Attacks\\
-    Phishing (a variation of spoofing) refers to an attack where the recipient of an E-Mail is made to believe that the E-Mail is a legitimate one. The E-Mail usually redirects them to a malicious website, which then steals their credentials. 
-    
-    E-Mail Header Injection gives attackers the ability to inject arbitrary headers into an E-Mail sent by a website and control the output of the E-Mail. This adds credibility to the generated E-Mail, and can result in more successful phishing attacks.
-	
-	\item Spam Networks\\
-	Spam networks can capitalize on the ability to send a large amount of E-Mail from servers that are trusted. By adding additional `cc' or `bcc' headers to the generated E-Mail, attackers can easily achieve this effect. 
-	
-	Due to the E-Mails being from trusted domains, E-Mail clients might not flag them as `spam'. If they do flag them as `spam', then that can lead to the website getting blacklisted as a spam generator. Irrespective of the behavior of spam filters, this does not bode well for the website.
-	
-	\item Information Extraction of legitimate users\\
-	E-Mails can contains sensitive data that is meant to be accessed only by the user. Due to E-Mail Header Injection, an attacker can easily add a `bcc' header, and send the E-Mail to himself, thereby extracting important information.
-	User Privacy can thus be compromised, and loss of private information can by itself lead to a host of other attacks.
-	
-	\item Denial of service by attacking the underlying mail server\\
-    Denial of service attacks (DoS as they are popularly known), can also be aided by E-Mail Header Injection. The ability to send hundreds of thousands of E-Mails by just injecting one header field can result in overloading the mail server, and cause crashes and/or instability. Denial of service attacks are serious, as they can cause loss of not just money, but also market share.
-\end{itemize}
-
-It is evident that if proper validation for E-Mail is not performed by these sites, this can quickly escalate to a huge issue.
-
-\begin{table}[!htbp]
+\begin{table}[!tb]
 	\centering
 	\begin{tabular}{|p{4cm}|p{4cm}|}
 		\hline
@@ -51,3 +28,27 @@ It is evident that if proper validation for E-Mail is not performed by these sit
 	\caption[\titlecap{Language usage statistics}]{Language usage statistics compiled from w3techs \cite{W3techs}.}
 	\label{tab:usage}
 \end{table}
+
+PHP, Java, Python, and Ruby (combined) account for over 85\%\footnote{A website may use more than one server-side programming language} of the websites measured. The vulnerability can be exploited to do potentially any of the following:
+
+
+\begin{itemize}
+	\item Phishing and Spoofing Attacks\\
+    Phishing \cite{wiki:Phishing} (a variation of spoofing \cite{wiki:Spoofing_attack}) refers to an attack where the recipient of an e-mail is made to believe that the e-mail is a legitimate one. The e-mail usually redirects them to a malicious website, which then steals their credentials. 
+    
+    E-Mail Header Injection gives attackers the ability to inject arbitrary headers into an e-mail sent by a website and control the output of the e-mail. This adds credibility to the generated e-mail, as it is sent right from the websites and people are more ready to trust e-mail that is received from the website directly and can thus result in more successful phishing attacks.
+	
+	\item Spam Networks\\
+	Spam networks can use E-Mail Header Injection vulnerabilities on the ability to send a large amount of e-mail from servers that are trusted. By adding additional \dq{\texttt{cc}} or \dq{\texttt{bcc}} headers to the generated e-mail, attackers can easily achieve this effect. 
+	
+	Due to the e-mails being from trusted domains, recipient e-mail clients might not flag them as spam. If they do flag them as spam, then that can lead to the website being blacklisted as a spam generator. 
+	
+	\item Information Extraction of legitimate users\\
+	E-Mails can contains sensitive data that is meant to be accessed only by the user. Due to E-Mail Header Injection, an attacker can easily add a \dq{\texttt{bcc}} header, and send the e-mail to himself, thereby extracting important information.
+	User privacy can thus be compromised, and loss of private information can by itself lead to other attacks.
+	
+	\item Denial of service by attacking the underlying mail server\\
+    Denial of service attacks (DoS), can also be aided by E-Mail Header Injection. The ability to send hundreds of thousands of e-mails by just injecting one header field can result in overloading the mail server, and cause crashes and/or instability. 
+\end{itemize}
+
+It is evident that E-Mail Header Injection is a critical vulnerability that web applications must address.
