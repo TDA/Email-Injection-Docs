@@ -1,4 +1,4 @@
-\lstset{language=Python,caption={Python program with the vulnerability.},label={code:pyemi}}
+\lstset{language=Python,caption={Python program with e-mail header injection vulnerability.},label={code:pyemi}}
 \begin{lstlisting}
 from email.parser import Parser
 import cgi
@@ -15,6 +15,7 @@ f.feed(msg)
 headers = FeedParser.close(f)
 
 # attack string => 'sai@sai.com\nBCC:spc@spc.com'
+# for form["email"]
 
 # both to:sai@sai.com AND bcc:spc@spc.com 
 # are added to the headers
