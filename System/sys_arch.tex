@@ -17,7 +17,7 @@ The black-box testing system can be divided broadly into two modules; Data Gathe
 		\item Analyze the e-mails, extracting the header fields and checking for the presence of the injected payloads (Section \ref{Comp:EMA}).
 		\item Inject the forms that sent us e-mails with malicious payloads, and generate an HTTP request to the corresponding URL to check if E-Mail Header Injection vulnerability exists in that form (Section \ref{Comp:Fuzzer:mp}).
 	\end{itemize} 
-	The functionality of each component is discussed further in the `Components' section (\ref{Comp}). The Payload Injection pipeline is not a linear, but cyclic process, as we inject different payloads and analyze the received e-mails.
+	The functionality of each component is discussed further in the `Components' section (Section~\ref{Comp}). The Payload Injection pipeline is not a linear, but cyclic process, as we inject different payloads and analyze the received e-mails.
 \end{enumerate}
 
 \begin{figure}
