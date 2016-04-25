@@ -6,7 +6,7 @@ This section describes the most common measures that can be taken to prevent the
 	This is the preferred way of combating this vulnerability. Using a library that is well tested can remove the burden of input sanitization from the developer. Also, since most of these libraries are open-source, bugs are identified quicker and fixes are readily available.
 	A list of known secure libraries for each popular language and framework is shown in Table~\ref{tab:maillib}.
 	
-	Using libraries such as PEAR Mail, PHPMailer, Apache Commons E-Mail, Contact Form 7, etc. can significantly reduce the occurrence of this type of attack.
+	Using libraries such as PEAR Mail, PHPMailer, Apache Commons E-Mail, Contact Form 7, and Swiftmailer can significantly reduce the occurrence of E-Mail Header Injection vulnerability.
 	\begin{table}[!htbp]
 		\centering
 		\begin{tabular}{|l|l|}
@@ -36,7 +36,7 @@ This section describes the most common measures that can be taken to prevent the
 	\item Input Validation\\
 	If neither of the two options above is feasible, due to reasons such as the website being an in-house production, or due to lack of support infrastructure, developers can choose to perform proper input sanitization. Sanitization should be done keeping in mind RFC5322 \cite{rfc5322}, and care must be taken to ensure that all edge cases are taken into account.
 	
-	Client Side validation alone is not sufficient, and must be supplemented by server-side validation to be reasonably confident of mitigating the attack. Constant updates to validation methods are required so that new attack vectors do not harm the website in any way.
+	Client Side validation alone is not sufficient, and must be supplemented by server-side validation to mitigate the attack. Constant updates to validation methods are required so that new attack vectors do not harm the website in any way.
 	Test driven development for such validation methods is also encouraged so that we can be reasonably sure of our defense mechanisms.
 \end{itemize}
 
